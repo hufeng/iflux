@@ -1,5 +1,3 @@
-var msg = require('../msg');
-
 /**
  * store-mixins
  *
@@ -20,13 +18,10 @@ module.exports = (store) => {
      * 当中心的数据发生变化的时候，改变顶层的app的state
      */
     componentDidMount() {
-      if (this.isMounted()) {
-        var _this = this;
-        msg.on('onStoreChange', (newStore) =>{
-	  store.store = newStore;
-          _this.replaceState(newStore);
-        });
-      }
+      var _this = this;
+      store.onStoreChange(function(nextState, path) {
+        _this.replaceState(nextState);
+      });
     }
   };
 }
