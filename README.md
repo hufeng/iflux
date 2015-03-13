@@ -26,14 +26,20 @@ React.js犹如Facebook的文化基因所强调的一样move fast and break thing
 
 Usage:
 
-```javascript
+```sh
+
 mkdir project
 cd project
 npm init
 npm install react immutable iflux --save
 npm install jsx-laoder --save-dev
 
+```
+
+
+```javascript
 webapi.js
+
 exports.fetchGithub = function(name) {
   return promise((defered) => {
     $ajax(url: '').done((data) => {
@@ -44,19 +50,19 @@ exports.fetchGithub = function(name) {
 
 store.js
 
-var ifux = require('iflux');
+var {Store, msg} = require('iflux');
 var webApi = require('./webapi');
 
-var appStore = module.exports = iflux.Store({
+var appStore = module.exports = Store({
   name: '',
   githubInfo: {}
 });
 
-iflux.msg.on('updateName', function(name) {
+msg.on('updateName', function(name) {
   appStore.cursor().set('name', name);
 });
 
-iflux.msg.on('submit', function() {
+msg.on('submit', function() {
   webApi.fetchGithub(name).then((data) => {
     appStore.cursor.set('githubInfo', data);
   });
@@ -67,6 +73,7 @@ iflux.msg.on('submit', function() {
 app.js
 var React = require('react');
 var iflux = require('iflux');
+var msg = iflux.msg;
 //自动将Store中的data混入到state
 var StoreMixin = iflux.mixins.StoreMixin;
 var appStore = require('./store');
@@ -90,11 +97,11 @@ var IfluxApp = React.createClass({
   },
   
   _handleChange(e) {
-    iflux.msg.emit('updateName', e.target.value);
+    msg.emit('updateName', e.target.value);
   },
   
   _submit() {
-    iflux.msg.emit('getGithubInfo');
+    msg.emit('getGithubInfo');
   }
 });
 
