@@ -27,6 +27,11 @@ React.js犹如Facebook的文化基因所强调的一样move fast and break thing
 Usage:
 
 ```javascript
+mkdir project
+cd project
+npm init
+npm install react immutable iflux --save
+npm install jsx-laoder --save-dev
 
 webapi.js
 exports.fetchGithub = function(name) {

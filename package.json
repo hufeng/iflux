@@ -1,23 +1,22 @@
 {
   "name": "iflux",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "iflux是我们探索将immutable.js和react.js更好的粘合的一种方案",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hufeng/iflux.git"
   },
   "keywords": [
     "immutbale",
     "react",
     "iflux"
   ],
-  "author": "hufeng",
+  "author": "hufeng <loveruby1988@qq.com>",
   "license": "ISC",
   "dependencies": {
-    "immutable": "^3.6.2",
-    "react": "^0.12.2"
-  },
-  "devDependencies": {
-    "jsx-loader": "^0.12.2"
   }
 }
