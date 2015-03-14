@@ -17,9 +17,9 @@ var appStore = module.exports = iflux.Store({
   form: {
     username: '',
     password: '',
-    confirm: ':)'    
+    confirm: ':)'
   },
-  email: ''  
+  email: ''
 });
 
 
@@ -42,29 +42,29 @@ var validator = iflux.Validator(appStore, {
     message: {
       required: 'username is required.',
       minLength: 'mix lenth 6',
-      maxLength: 'max length 20'      
-    }	    
+      maxLength: 'max length 20'
+    }
   },
   'form.password': {
     required: true,
-    message: {required: 'password is required.'}	  
-  },	
+    message: {required: 'password is required.'}
+  },
   'form.confirm': {
     required: true,
     equal: 'form.password',
     message: {
       required: 'confirm password is required.',
-      equal: 'confirm password should be equal password'	    
-    }    
+      equal: 'confirm password should be equal password'
+    }
   },
   email: {
     required: true,
     email: true,
     message: {
       required: 'email is requied',
-      email: 'email is invalid.'	    
-    }    
-  }	
+      email: 'email is invalid.'
+    }
+  }
 });
 
 
