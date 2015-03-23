@@ -3,6 +3,7 @@
  */
 
 var iflux = require('../index');
+var Immutable = require('immutable');
 
 /**
  * 数据中心
@@ -84,3 +85,17 @@ console.log('fieldErros->', validator.fieldErrors());
 
 //validator confirm
 //validator.isValid('form.confirm');
+
+appStore.cursor().set('form', Immutable.fromJS({
+  username: 'hf',
+  password: 'hf',
+  confirm: '(:'
+}));
+
+console.log(appStore.data().get('form').toString());
+
+// appStore.reset('form');
+// console.log(appStore.data().get('form').toString());
+
+appStore.reset(['form', 'username'])
+console.log(appStore.data().get('form').toString());
