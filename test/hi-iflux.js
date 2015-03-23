@@ -59,10 +59,11 @@ var validator = iflux.Validator(appStore, {
     }
   },
   email: {
-    required: true,
+    //    required: true,
+    customRequired: true,
     email: true,
     message: {
-      required: 'email is requied',
+      customRequired: 'email is requied',
       email: 'email is invalid.'
     }
   }
@@ -76,6 +77,15 @@ validator.rule('equal', function(param, val) {
   var password = appStore.data().getIn(param.split('\.'));
 
   return password === val;
+});
+
+
+validator.rule('customRequired', function(param, val) {
+  var result = true;
+  if (param == true) {
+    return !!val;
+  }
+  return result;
 });
 
 
