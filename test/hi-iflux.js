@@ -97,5 +97,7 @@ console.log(appStore.data().get('form').toString());
 // appStore.reset('form');
 // console.log(appStore.data().get('form').toString());
 
-appStore.reset(['form', 'username'])
+//appStore.reset(['form', 'username'])
+appStore.reset(); //rollback
+console.log('reset->');
 console.log(appStore.data().get('form').toString());
