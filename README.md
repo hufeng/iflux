@@ -1,6 +1,9 @@
 ### what is iflux ?
 
-**iflux = immutable.js + react.js**
+*iflux = immutable.js + react.js*
+
+
+[![NPM](https://nodei.co/npm/iflux.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/iflux/)
 
 
 ### Why React ?
