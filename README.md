@@ -1,14 +1,14 @@
-## what is iflux ?
+### what is iflux ?
 
 **iflux = immutable.js + react.js**
 
 
-## Why React ?
+### Why React ?
 [React.js](http://facebook.github.io/react/)犹如Facebook的文化基因所强调的一样move fast and break things, 在快速前进中打破了很多我们对于web开发的固有认识。
 更厉害的是React把这种创新平移到移动开发(React native)实现了Learn once, Write everywhere.
 
 
-## React的特点
+### React的特点
 
 1. 强调组件化的开发方式（更高的抽象层次，更好的分离关注点）
 
@@ -25,7 +25,7 @@
 7. 精确的生命周期，更简单的整合第三方的库(jquery)
 
 
-## 我们期待走的更远
+### 我们期待走的更远
 
 因为React的定位就是轻量级高效组件式的view library，但是在我们实际的应用开发工程中不仅仅需要处理view的问题，更复杂的是对于状态的控制。
 官方的[flux](https://facebook.github.io/flux/docs/overview.html)架构提供了一个很好的针对React的架构指导，但是代码量很大。
@@ -35,7 +35,7 @@
 能够更好的追踪状态的变化(cursor)且带来了更好的性能。
 
 
-## 保持简单
+### 保持简单
 
 ```
 +-----------------------+
@@ -78,7 +78,8 @@
 5. 区分View component 和 pure component。
 
 
-Usage:
+
+### for example
 
 ```sh
 
@@ -90,10 +91,25 @@ npm install jsx-laoder --save-dev
 
 ```
 
+```
+➜  iflux-demo  tree -L 3
+.
+├── app
+│   └── js
+│       ├── app.js
+│       ├── components
+│       ├── const.js
+│       └── webapi.js
+├── node_modules
+├── package.json
+└── webpack.config.js
+
+5 directories, 4 files
+```
+
 
 ```javascript
-webapi.js
-
+//webapi.js
 exports.fetchGithub = function(name) {
   return promise((defered) => {
     $ajax(url: '').done((data) => {
@@ -102,8 +118,7 @@ exports.fetchGithub = function(name) {
   });
 };
 
-store.js
-
+//store.js
 var {Store, msg} = require('iflux');
 var webApi = require('./webapi');
 
@@ -123,8 +138,7 @@ msg.on('submit', function() {
 })
 
 
-
-app.js
+//app.js
 var React = require('react');
 var iflux = require('iflux');
 var msg = iflux.msg;
