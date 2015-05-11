@@ -113,7 +113,7 @@ npm install jsx-laoder --save-dev
 
 ```javascript
 //webapi.js
-exports.fetchGithub = function(name) {
+export fetchGithub = (name) => {
   return promise((defered) => {
     $ajax(url: '').done((data) => {
       deferred.resolve(data);
@@ -122,34 +122,35 @@ exports.fetchGithub = function(name) {
 };
 
 //store.js
-var {Store, msg} = require('iflux');
-var webApi = require('./webapi');
+import {Store, msg} from 'iflux';
+import {fetchGithub} from './webapi';
 
-var appStore = module.exports = Store({
+let appStore = Store({
   name: '',
   githubInfo: {}
 });
+
+exports default appStore;
 
 msg.on('updateName', function(name) {
   appStore.cursor().set('name', name);
 });
 
 msg.on('submit', function() {
-  webApi.fetchGithub(name).then((data) => {
+  fetchGithub(name).then((data) => {
     appStore.cursor.set('githubInfo', data);
   });
-})
+});
 
 
 //app.js
-var React = require('react');
-var iflux = require('iflux');
-var msg = iflux.msg;
+import React from 'react';
+import iflux, {msg} from 'iflux';
+import appStore from './store';
 //自动将Store中的data混入到state
-var StoreMixin = iflux.mixins.StoreMixin;
-var appStore = require('./store');
+let StoreMixin = iflux.mixins.StoreMixin;
 
-var IfluxApp = React.createClass({
+let IfluxApp = React.createClass({
   mixins: [StoreMixin(appStore)],
 
   render() {
