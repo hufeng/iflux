@@ -16,7 +16,7 @@ var appStore = module.exports = iflux.Store({
     'webpack'
   ],
   form: {
-    username: '',
+    username: 'iflux1.0.7',
     password: '',
     confirm: ':)'
   },
@@ -43,7 +43,8 @@ var validator = iflux.Validator(appStore, {
     message: {
       required: 'username is required.',
       minLength: 'mix lenth 6',
-      maxLength: 'max length 20'
+      maxLength: 'max length 20',
+      success: 'username is valid'
     }
   },
   'form.password': {
@@ -59,11 +60,10 @@ var validator = iflux.Validator(appStore, {
     }
   },
   email: {
-    //    required: true,
-    customRequired: true,
+    required: true,
     email: true,
     message: {
-      customRequired: 'email is requied',
+      required: 'email is requied',
       email: 'email is invalid.'
     }
   }
@@ -77,15 +77,6 @@ validator.rule('equal', function(param, val) {
   var password = appStore.data().getIn(param.split('\.'));
 
   return password === val;
-});
-
-
-validator.rule('customRequired', function(param, val) {
-  var result = true;
-  if (param == true) {
-    return !!val;
-  }
-  return result;
 });
 
 
