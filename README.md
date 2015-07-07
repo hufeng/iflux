@@ -90,7 +90,7 @@ mkdir project
 cd project
 npm init
 npm install react immutable iflux --save
-npm install jsx-laoder --save-dev
+npm install babel-loader --save-dev
 
 ```
 
