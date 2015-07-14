@@ -30,7 +30,7 @@ console.log('store data->', appStore.data().toString());
 
 //获取store数据的cursor
 //console.log(appStore.cursor());
-console.log('cursor->', appStore.cursor().toString());
+//console.log('cursor->', appStore.cursor().toString());
 
 /**
  * validator
@@ -90,11 +90,17 @@ validator.rule('customRequired', function(param, val) {
 
 
 //validator all
-validator.isValid();
-console.log('fieldErros->', validator.fieldErrors());
+//validator.isValid();
+//console.log('fieldErros->', validator.fieldErrors());
 
 //validator confirm
-//validator.isValid('form.confirm');
+validator.isValid('form.confirm');
+validator.isValid('form.username');
+validator.clearError('form.confirm');
+//validator.clearError();
+validator.isValid('form.password');
+console.log('fieldErros->',appStore.data().toString());
+
 
 appStore.cursor().set('form', Immutable.fromJS({
   username: 'hf',
@@ -102,12 +108,12 @@ appStore.cursor().set('form', Immutable.fromJS({
   confirm: '(:'
 }));
 
-console.log(appStore.data().get('form').toString());
 
+//console.log(appStore.data().get('form').toString());
 // appStore.reset('form');
 // console.log(appStore.data().get('form').toString());
 
 //appStore.reset(['form', 'username'])
-appStore.reset(); //rollback
-console.log('reset->');
-console.log(appStore.data().get('form').toString());
+//appStore.reset(); //rollback
+//console.log('reset->');
+//console.log(appStore.data().get('form').toString());
