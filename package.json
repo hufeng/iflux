@@ -1,6 +1,6 @@
 {
   "name": "iflux",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "iflux是我们探索将immutable.js和react.js更好的粘合的一种方案",
   "main": "index.js",
   "scripts": {
