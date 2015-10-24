@@ -145,12 +145,12 @@ msg.on('submit', function() {
 
 //app.js
 import React from 'react';
-import iflux, {msg} from 'iflux';
+import {msg, mixins: StoreMixin} from 'iflux';
 import appStore from './store';
-//自动将Store中的data混入到state
-let StoreMixin = iflux.mixins.StoreMixin;
+
 
 let IfluxApp = React.createClass({
+  //自动将Store中的data混入到state
   mixins: [StoreMixin(appStore)],
 
   render() {
