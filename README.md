@@ -11,7 +11,7 @@
 更厉害的是React把这种创新平移到移动开发(React native)实现了Learn once, Write everywhere.
 
 
-### React的特点
+### React features
 
 1. 强调组件化的开发方式（更高的抽象层次，更好的分离关注点）
 
@@ -28,7 +28,7 @@
 7. 精确的生命周期，更简单的整合第三方的库(jquery)
 
 
-### 我们期待走的更远
+### 我们期待走的更远 - dare for more
 
 因为React的定位就是轻量级高效组件式的view library，但是在我们实际的应用开发工程中不仅仅需要处理view的问题，更复杂的是对于状态的控制。
 官方的[flux](https://facebook.github.io/flux/docs/overview.html)架构提供了一个很好的针对React的架构指导，但是代码量很大。
@@ -38,7 +38,9 @@
 能够更好的追踪状态的变化(cursor)且带来了更好的性能。
 
 
-### 保持简单
+### 保持简单 -- KISS
+
+* 建议：优先选择connectToStore 
 
 ```
 +-----------------------+
@@ -49,7 +51,7 @@
 +-----------------------+
 |   Store（immutable）   |<-----+
 +-----------------------+      |
-           |                   |
+           | //es5 style       |
            | StoreMixin        | msg(EventEmitter)
           \|/                  |
 +------------------------+     |
@@ -82,12 +84,12 @@
 
 
 
-### for example
+### How to use?
 
 ```sh
 
-mkdir project
-cd project
+mkdir hello
+cd hello
 npm init
 npm install react immutable iflux --save
 npm install babel-loader --save-dev
@@ -97,59 +99,68 @@ npm install babel-loader --save-dev
 ```
 ➜  iflux-demo  tree -L 3
 .
-├── app
-│   └── js
-│       ├── app.js
-│       ├── components
-│       ├── const.js
-│       └── webapi.js
+├── apps                #we like django's app-style
+│   └── index           #app-name
+│       ├── index.js    #viewcontainer component
+│       ├── component   #collect of dump components
+│       ├── store.js    #immutable store
+│       └── webapi.js   #fetch remote resource
 ├── node_modules
 ├── package.json
 └── webpack.config.js
 
 5 directories, 4 files
+
 ```
 
+### Example
 
 ```javascript
 //webapi.js
-export fetchGithub = (name) => {
-  return promise((defered) => {
-    $ajax(url: '').done((data) => {
-      deferred.resolve(data);
-    });
-  });
+
+export const fetchGithub = (name) => {
+  return fetch(`http://github.com/${name}`)
 };
 
-//store.js
-import {Store, msg} from 'iflux';
-import {fetchGithub} from './webapi';
+export default {
+  fetchGithub
+};
 
-let appStore = Store({
+
+//store.js
+import { Store, msg } from 'iflux';
+import { fromJS } from 'immutable';
+import { fetchGithub } from './webapi';
+
+const appStore = Store({
   name: '',
   githubInfo: {}
 });
 
 exports default appStore;
 
-msg.on('updateName', function(name) {
+//when use immutable's cursor to update store
+//react's view will auto re-render
+msg.on('updateName', (name) => {
   appStore.cursor().set('name', name);
 });
 
-msg.on('submit', function() {
-  fetchGithub(name).then((data) => {
-    appStore.cursor.set('githubInfo', data);
-  });
+msg.on('submit', async () => {
+  const data = await fetchGithub(name);
+  appStore.cursor.set('githubInfo', fromJS(data));
 });
 
 
-//app.js
+//index.js
+
+//es5-style
 import React from 'react';
-import {msg, mixins: StoreMixin} from 'iflux';
+import {msg, mixins} from 'iflux';
 import appStore from './store';
+const {StoreMixin} = mixins;
 
 
-let IfluxApp = React.createClass({
+const IfluxApp = React.createClass({
   //自动将Store中的data混入到state
   mixins: [StoreMixin(appStore)],
 
@@ -177,6 +188,30 @@ let IfluxApp = React.createClass({
   }
 });
 
+
+//es6-style
+import React from 'react';
+import { msg, connectToStore } from 'iflux';
+import appStore from './store';
+
+class IfluxApp extends React.Component {
+  render() {
+    const {store} = this.props;
+
+    return (
+      <div>
+        <form onSubmit={this._submit}>
+            <input name="name" onChange={this._handleChange}/>
+        </form>
+        <div>
+          {store.get('githubInfo')}
+        </div>
+      </div>
+    );
+  }
+}
+
+export default connectToStore(appStore)(IfluxApp);
 ```
 
 ## more
