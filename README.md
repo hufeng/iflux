@@ -221,3 +221,5 @@ https://github.com/hufeng/iflux-validator-demo
 https://github.com/hufeng/my-todo/tree/master/todo-iflux
 
 https://github.com/hufeng/hn-news-iflux
+
+https://github.com/QianmiOpen/react-starter
