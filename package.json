@@ -4,7 +4,7 @@
   "description": "iflux是我们探索将immutable.js和react.js更好的粘合的一种方案",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/jest --verbose"
   },
   "repository": {
     "type": "git",
@@ -15,9 +15,22 @@
     "react",
     "iflux"
   ],
-  "author": "hufeng <loveruby1988@qq.com>",
+  "author": "hufeng <hufeng@qianmi.com>",
   "license": "ISC",
   "dependencies": {
     "object-assign": "^4.0.1"
+  },
+  "devDependencies": {
+    "babel-jest": "^19.0.0",
+    "babel-plugin-transform-class-properties": "^6.23.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.23.0",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.23.0",
+    "immutable": "^3.8.1",
+    "jest": "^19.0.2",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-test-renderer": "^15.4.2"
   }
 }

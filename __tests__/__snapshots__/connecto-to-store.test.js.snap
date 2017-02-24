@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`connectToStore test suite it initial render && store set name 1`] = `
+<div>
+  iflux-web
+</div>
+`;
+
+exports[`connectToStore test suite it initial render && store set name 2`] = `
+<div>
+  iflux2
+</div>
+`;
