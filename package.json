@@ -1,6 +1,6 @@
 {
   "name": "iflux",
-  "version": "1.2.15",
+  "version": "1.2.16",
   "description": "iflux是我们探索将immutable.js和react.js更好的粘合的一种方案",
   "main": "index.js",
   "scripts": {
@@ -14,6 +14,11 @@
     "immutbale",
     "react",
     "iflux"
+  ],
+  "files": [
+    "README.md",
+    "LICENSE",
+    "lib"
   ],
   "author": "hufeng <hufeng@qianmi.com>",
   "license": "ISC",
