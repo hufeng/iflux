@@ -1,41 +1,27 @@
 {
-  "name": "iflux",
-  "version": "1.2.16",
-  "description": "iflux是我们探索将immutable.js和react.js更好的粘合的一种方案",
-  "main": "index.js",
-  "scripts": {
-    "test": "./node_modules/.bin/jest --verbose"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/hufeng/iflux.git"
-  },
-  "keywords": [
-    "immutbale",
-    "react",
-    "iflux"
+  "private": true,
+  "workspaces": [
+    "packages/*"
   ],
-  "files": [
-    "README.md",
-    "LICENSE",
-    "lib"
-  ],
-  "author": "hufeng <hufeng@qianmi.com>",
-  "license": "ISC",
+  "name": "iflux-mono-repos",
   "dependencies": {
-    "object-assign": "^4.0.1"
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
   },
   "devDependencies": {
-    "babel-jest": "^19.0.0",
-    "babel-plugin-transform-class-properties": "^6.23.0",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.23.0",
-    "babel-polyfill": "^6.23.0",
-    "babel-preset-es2015": "^6.22.0",
-    "babel-preset-react": "^6.23.0",
-    "immutable": "^3.8.1",
-    "jest": "^19.0.2",
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2",
-    "react-test-renderer": "^15.4.2"
+    "@types/node": "^11.13.2",
+    "@types/react": "^16.8.13",
+    "@types/react-dom": "^16.8.3",
+    "@types/jest": "^24.0.11",
+    "jest": "^24.7.1",
+    "typescript": "^3.4.2",
+    "ts-jest": "^24.0.2",
+    "react-test-renderer": "^16.8.6",
+    "lerna": "^3.13.2",
+    "mock-jest-console": "^1.1.1"
+  },
+  "scripts": {
+    "test": "npx jest",
+    "test:watch": "npx jest --watch --verbose"
   }
 }
