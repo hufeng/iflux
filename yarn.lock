@@ -1029,6 +1029,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-test-renderer@^16.8.1":
+  version "16.8.1"
+  resolved "http://registry.npm.taobao.org/@types/react-test-renderer/download/@types/react-test-renderer-16.8.1.tgz#96f3ce45a3a41c94eca532a99103dd3042c9d055"
+  integrity sha1-lvPORaOkHJTspTKpkQPdMELJ0FU=
+  dependencies:
+    "@types/react" "*"
+
 "@types/react@*", "@types/react@^16.8.13":
   version "16.8.13"
   resolved "http://registry.npm.taobao.org/@types/react/download/@types/react-16.8.13.tgz#a82b15aad9ab91c40edca0d6889b7745ae24f053"

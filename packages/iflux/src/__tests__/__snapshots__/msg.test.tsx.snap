@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test useMsg 1`] = `
+<div>
+  test
+</div>
+`;
+
+exports[`test useMsg 2`] = `
+<div>
+  hello
+</div>
+`;

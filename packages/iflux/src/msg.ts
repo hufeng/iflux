@@ -1,18 +1,23 @@
 import mitt from 'mitt';
 import { useEffect } from 'react';
 
-export type TMsgListeners = Array<{ name: string; handler: mitt.Handler }>;
+export type TMsgListeners = { [name: string]: mitt.Handler };
 
-export const msg: mitt.Emitter = new mitt();
+export const msg = new mitt();
 
-export function useMsg(listeners: TMsgListeners = []) {
+export function useMsg(listener: TMsgListeners = {}) {
+  //componentDidMount
   useEffect(() => {
-    for (let { name, handler } of listeners) {
-      msg.on(name, handler);
+    const keys = Object.keys(listener);
+
+    for (let key of keys) {
+      msg.on(key, listener[key]);
     }
+
+    //componentWillUnmount
     return () => {
-      for (let { name, handler } of listeners) {
-        msg.off(name, handler);
+      for (let key of keys) {
+        msg.off(key, listener[key]);
       }
     };
   }, []);
