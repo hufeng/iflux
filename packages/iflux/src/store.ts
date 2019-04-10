@@ -38,6 +38,9 @@ export class Store<T = any> {
   constructor(props: IStoreProps<T>) {
     const { debug, state = {}, el = {}, action = {} } = props;
 
+    this._cache = {};
+    this._subscribe = [];
+
     this.debug = debug || false;
     if (process.env.NODE_ENV != 'production') {
       if (this.debug) {
@@ -49,9 +52,6 @@ export class Store<T = any> {
     this._state = state as T;
     this._el = this._transformEl(el);
     this._action = this._reduceAction(action);
-
-    this._cache = {};
-    this._subscribe = [];
   }
 
   private _parseEL = (el: EffectLang) => {
@@ -199,6 +199,7 @@ export class Store<T = any> {
     } else if (query instanceof QueryLang) {
       let isChanged = false;
       const { id, deps, name, handler } = query.meta();
+
       //init cache
       this._cache[id] || (this._cache[id] = []);
       const len = deps.length;

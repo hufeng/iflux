@@ -24,7 +24,6 @@ export type TAction = (msg: string, handler: TActionHandler) => TActionRetFn;
 export interface IStoreProps<T = {}> {
   debug?: boolean;
   state?: T;
-  ql?: { [name: string]: QueryLang };
   el?: { [name: string]: EffectLang };
   action?: { [name: string]: TActionRetFn };
 }
