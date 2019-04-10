@@ -9,7 +9,7 @@ export type TPath = Array<string | number> | string | QueryLang;
 export type TQLang = Array<TPath | Function>;
 
 export type TRelaxPath = Array<
-  string | number | Array<string | number> | Object
+  string | number | Array<string | number> | Object | QueryLang
 >;
 
 export interface IQLangProps {

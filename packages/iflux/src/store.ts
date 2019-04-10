@@ -55,21 +55,6 @@ export class Store<T = any> {
 
     this._cache = {};
     this._subscribe = [];
-
-    this._computeQL();
-  }
-
-  private _computeQL() {
-    const rx = Object.keys(this._ql).reduce((r, k) => {
-      const ql = this._ql[k];
-      r[k] = this.bigQuery(ql);
-      return r;
-    }, {});
-
-    this._state = {
-      ...this._state,
-      ...rx
-    };
   }
 
   private _parseEL = (el: EffectLang) => {
@@ -200,7 +185,6 @@ export class Store<T = any> {
     const state = produce(this._state, callback as any);
     if (state !== this._state) {
       this._state = state as T;
-      this._computeQL();
       this._computeEL();
 
       //update ui
