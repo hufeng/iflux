@@ -13,7 +13,7 @@ import { getPathVal, isArray, isStr } from './util';
 
 /**
  * 是不是可以批量处理
- * ReactDOM'sunstable_batchedUpdates 可以很酷的解决父子组件级联渲染的问题
+ * ReactDOM unstable_batchedUpdates 可以很酷的解决父子组件级联渲染的问题
  * 可惜 Preact 不支持，只能靠 Immutable 的不可变这个特性来挡着了
  * 在 react-native 环境中，unstable_batchedUpdates 是在 react-native 对象中
  * 所以我们的 babel-plugin-plume2 就是去解决这个问题
@@ -31,13 +31,12 @@ export class Store<T = any> {
   public debug: boolean;
   private _state: T;
   private _subscribe: Array<TSubscriber>;
-  private _ql: { [name: string]: QueryLang };
   private _el: Array<Function>;
   private _cache: { [key: number]: Array<any> };
   private _action: { [name: string]: TActionHandler };
 
   constructor(props: IStoreProps<T>) {
-    const { debug, state = {}, ql = {}, el = {}, action = {} } = props;
+    const { debug, state = {}, el = {}, action = {} } = props;
 
     this.debug = debug || false;
     if (process.env.NODE_ENV != 'production') {
@@ -48,8 +47,6 @@ export class Store<T = any> {
     }
 
     this._state = state as T;
-
-    this._ql = ql;
     this._el = this._transformEl(el);
     this._action = this._reduceAction(action);
 
