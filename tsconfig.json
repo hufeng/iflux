@@ -4,8 +4,6 @@
     "module": "commonjs",
     "jsx": "react",
 
-    "incremental": true,
-
     "strict": true,
     "noImplicitAny": false,
     "strictNullChecks": true,

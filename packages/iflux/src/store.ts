@@ -42,13 +42,6 @@ export class Store<T = any> {
     this._subscribe = [];
 
     this.debug = debug || false;
-    if (process.env.NODE_ENV != 'production') {
-      if (this.debug) {
-        const { version } = require('../package.json');
-        console.log(`iflux@${version}`);
-      }
-    }
-
     this._state = state as T;
     this._el = this._transformEl(el);
     this._action = this._reduceAction(action);
@@ -279,6 +272,12 @@ export class Store<T = any> {
   pprint() {
     if (process.env.NODE_ENV !== 'production') {
       console.log(JSON.stringify(this._state, null, 2));
+    }
+  }
+
+  pprintAction() {
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(JSON.stringify(Object.keys(this._action), null, 2));
     }
   }
 }

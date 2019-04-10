@@ -15,14 +15,17 @@ export default function useRelax<T = {}>(
   const [relax, updateState] = useState(relaxData);
 
   //get last relax state
-  const preRelax = useRef({});
+  const preRelax = useRef(null);
   useEffect(() => {
+    //@ts-ignore
     preRelax.current = relax;
   });
 
   if (process.env.NODE_ENV !== 'production') {
     if (store.debug && name && !preRelax.current) {
-      console.log(`Relax(${name}):`, relax);
+      //@ts-ignore
+      const { setState, dispatch, ...rest } = relax;
+      console.log(`Relax(${name}):`, rest);
     }
   }
 
@@ -33,7 +36,9 @@ export default function useRelax<T = {}>(
       if (!isEqual(newState, preRelax.current)) {
         if (process.env.NODE_ENV !== 'production') {
           if (store.debug && name) {
-            console.log(`Relax(${name})-update:`, newState);
+            //@ts-ignore
+            const { setState, dispatch, ...rest } = newState;
+            console.log(`Relax(${name})-update:`, rest);
           }
         }
         updateState(newState);
