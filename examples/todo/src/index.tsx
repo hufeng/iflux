@@ -10,7 +10,11 @@ import './css/index.css';
 import store from './store';
 
 const TodoApp = () => (
-  <Provider store={store} onMounted={store => store.dispatch(Command.INIT)}>
+  <Provider
+    store={store}
+    onMounted={store => store.dispatch(Command.INIT)}
+    id='todoapp'
+  >
     <section className='todoapp'>
       <Header />
       <Main />

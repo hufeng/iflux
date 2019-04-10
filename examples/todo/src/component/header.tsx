@@ -4,7 +4,7 @@ import { Command } from '../command';
 type TRelax = { value: string };
 
 export default function Header() {
-  const { value, dispatch } = useRelax<TRelax>(['value'], 'header');
+  const { value, dispatch } = useRelax<TRelax>(['value'], 'Header');
 
   const _handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.keyCode === 13) {

@@ -1,6 +1,5 @@
 import { createStore } from 'iflux';
 import * as action from './action';
-import * as ql from './ql';
 
 export interface ITodo {
   id: number;
@@ -15,7 +14,7 @@ export interface IState {
 }
 
 export default createStore<IState>({
-  ql,
+  debug: true,
   action,
   state: {
     filterStatus: '',

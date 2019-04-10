@@ -1,8 +1,9 @@
 import { useRelax } from 'iflux';
 import React from 'react';
 import { Command } from '../command';
+import { countQL } from '../ql';
 
-type TRelax = { countQL: number; filterStatus: string };
+type TRelax = { count: number; filterStatus: string };
 
 const _getCountText = (count: number) => {
   if (count > 1) {
@@ -15,14 +16,14 @@ const _getCountText = (count: number) => {
 };
 
 export default function Footer() {
-  const { filterStatus, countQL, dispatch } = useRelax<TRelax>(
-    ['count', 'filterStatus'],
+  const { filterStatus, count, dispatch } = useRelax<TRelax>(
+    ['filterStatus', { count: countQL }],
     'Footer'
   );
 
   return (
     <footer className='footer'>
-      <span className='todo-count'>{_getCountText(countQL)}</span>
+      <span className='todo-count'>{_getCountText(count)}</span>
       <ul className='filters'>
         <li>
           <a
@@ -44,7 +45,7 @@ export default function Footer() {
         </li>
         <li>
           <a
-            href='javacript:;'
+            href='javascript:;'
             className={'completed' === filterStatus ? 'selected' : ''}
             onClick={() => dispatch(Command.CHANGE_FILTER, 'completed')}
           >

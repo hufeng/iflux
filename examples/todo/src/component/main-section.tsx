@@ -1,12 +1,15 @@
 import { useRelax } from 'iflux';
 import React from 'react';
 import { Command } from '../command';
+import { todoQL } from '../ql';
 import { ITodo } from '../store';
-
-type TRelax = { todoQL: Array<ITodo> };
+type TRelax = { todo: Array<ITodo> };
 
 export default function MainSection() {
-  const { todoQL, dispatch } = useRelax<TRelax>(['todoQL']);
+  const { todo, dispatch } = useRelax<TRelax>(
+    [{ todo: todoQL }],
+    'MainSection'
+  );
 
   return (
     <section className='main'>
@@ -17,7 +20,7 @@ export default function MainSection() {
       />
       <label htmlFor='toggle-all'>Mark all as complete</label>
       <ul className='todo-list'>
-        {todoQL.map((v, k) => (
+        {todo.map((v, k) => (
           <li key={v.id}>
             <div className='view'>
               <input
