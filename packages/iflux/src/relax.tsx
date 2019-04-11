@@ -68,13 +68,11 @@ export function Relax(relaxProps: TRelaxPath): any {
       };
       _isRx: boolean;
       _unsubscirbe: Function;
-      _relaxProxy: React.Component<{}, any, any> | null;
 
       constructor(props: Object, ctx) {
         super(props);
         this._store = ctx;
         this._isMounted = false;
-        this._relaxProxy = null;
 
         this._relaxPropsMapper = reduceRelaxPropsMapper(relaxProps);
         this.relaxProps = computeRelaxProps(
