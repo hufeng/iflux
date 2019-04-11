@@ -1,9 +1,10 @@
 import React from 'react';
 import render, { act } from 'react-test-renderer';
-import { createStore, Provider, useRelax } from '../index';
+import { createStore, Provider, Relax, useRelax } from '../index';
+import { TRelaxProps } from '../types';
 import * as _ from '../util';
 
-type TRelaxProps = {
+type TProps = {
   id: number;
   lname: string;
   name: string;
@@ -18,7 +19,7 @@ const store = createStore({
 });
 
 function TestRelax() {
-  const { id, lname, name, setState, dispatch } = useRelax<TRelaxProps>([
+  const { id, lname, name, setState, dispatch } = useRelax<TProps>([
     ['list', 0, 'id'],
     { lname: 'list.0.name' },
     'name'
@@ -35,9 +36,33 @@ function TestRelax() {
   );
 }
 
+@Relax([
+  //
+  ['list', 0, 'id'],
+  { lname: 'list.0.name' },
+  'name'
+])
+class RelaxTest extends React.Component {
+  relaxProps = {} as TRelaxProps<TProps>;
+
+  render() {
+    const { id, name, lname, setState, dispatch } = this.relaxProps;
+    return (
+      <div>
+        {id}
+        {name}
+        {lname}
+        {_.isFn(dispatch) && 'yes'}
+        {_.isFn(setState) && 'yes'}
+      </div>
+    );
+  }
+}
+
 const TestApp = () => (
   <Provider store={store} id='TestApp'>
     <TestRelax />
+    <RelaxTest />
   </Provider>
 );
 

@@ -7,23 +7,41 @@ exports[`test defaultInject setState and dispatch 1`] = `
 `;
 
 exports[`test init 1`] = `
-<div>
-  1
-  test
-  test
-  yes
-  yes
-</div>
+Array [
+  <div>
+    1
+    test
+    test
+    yes
+    yes
+  </div>,
+  <div>
+    1
+    test
+    test
+    yes
+    yes
+  </div>,
+]
 `;
 
 exports[`test init 2`] = `
-<div>
-  2
-  test
-  test
-  yes
-  yes
-</div>
+Array [
+  <div>
+    2
+    test
+    test
+    yes
+    yes
+  </div>,
+  <div>
+    2
+    test
+    test
+    yes
+    yes
+  </div>,
+]
 `;
 
 exports[`test no subscribe 1`] = `<div />`;

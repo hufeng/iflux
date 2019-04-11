@@ -1,14 +1,12 @@
 import isEqual from 'fast-deep-equal';
-import { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { StoreContext } from './context';
 import { Store } from './store';
 import { TRelaxPath } from './types';
 import { isArray, isObj, isStr } from './util';
 
-export default function useRelax<T = {}>(
-  props: TRelaxPath = [],
-  name: string = ''
-) {
+//==========================relax hook==============================
+export function useRelax<T = {}>(props: TRelaxPath = [], name: string = '') {
   const store: Store = useContext(StoreContext);
   const relaxPropsMapper = reduceRelaxPropsMapper(props);
   const relaxData = computeRelaxProps<T>(store, relaxPropsMapper);
@@ -31,6 +29,10 @@ export default function useRelax<T = {}>(
 
   //only componentDidMount && componentWillUnmount
   useEffect(() => {
+    if (!isRx(props)) {
+      return noop;
+    }
+
     return store.subscribe(() => {
       const newState = computeRelaxProps<T>(store, relaxPropsMapper);
       if (!isEqual(newState, preRelax.current)) {
@@ -49,11 +51,90 @@ export default function useRelax<T = {}>(
   return relax;
 }
 
+///======================relax class=========================================
+export function Relax(relaxProps: TRelaxPath): any {
+  return function wrapper(Wrapper: React.ComponentClass) {
+    return class RelaxWrapper extends Wrapper {
+      static contextType = StoreContext;
+      static displayName = `Relax(${Wrapper.name})`;
+      static defaultProps = Wrapper.defaultProps || {};
+
+      relaxProps: Object;
+
+      _store: Store;
+      _isMounted: boolean;
+      _relaxPropsMapper: {
+        [name: string]: Array<string | number> | string;
+      };
+      _isRx: boolean;
+      _unsubscirbe: Function;
+      _relaxProxy: React.Component<{}, any, any> | null;
+
+      constructor(props: Object, ctx) {
+        super(props);
+        this._store = ctx;
+        this._isMounted = false;
+        this._relaxProxy = null;
+
+        this._relaxPropsMapper = reduceRelaxPropsMapper(relaxProps);
+        this.relaxProps = computeRelaxProps(
+          this._store,
+          this._relaxPropsMapper
+        );
+
+        this._isRx = isRx(relaxProps);
+        this._unsubscirbe = noop;
+        if (this._isRx) {
+          this._unsubscirbe = this._store.subscribe(this._handleRx);
+        }
+      }
+
+      componentDidMount() {
+        this._isMounted = true;
+      }
+
+      shouldComponentUpdate(nextProps, nextState) {
+        if (!isEqual(nextProps, this.props)) {
+          return true;
+        }
+
+        if (!isEqual(nextState, this.state)) {
+          //重新计算
+          this.relaxProps = computeRelaxProps(
+            this._store,
+            this._relaxPropsMapper
+          );
+          return true;
+        }
+
+        return false;
+      }
+
+      componentWillUnmount() {
+        this._isMounted = false;
+        this._unsubscirbe();
+      }
+
+      _handleRx = (state: Object) => {
+        if (this._isMounted) {
+          this.setState({
+            storeState: state
+          });
+        }
+      };
+    };
+  };
+}
+
+function isRx(relaxProps: Array<any> = []) {
+  return relaxProps.length !== 0;
+}
+
 /**
  * 归集属性
  * @param relaxProps
  */
-function reduceRelaxPropsMapper(relaxProps: TRelaxPath) {
+function reduceRelaxPropsMapper(relaxProps: TRelaxPath = []) {
   const relaxPathMapper = {};
 
   for (let prop of relaxProps) {
@@ -119,3 +200,5 @@ function computeRelaxProps<T>(
     setState: typeof store.setState;
   };
 }
+
+function noop() {}

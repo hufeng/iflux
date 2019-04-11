@@ -3,7 +3,20 @@ import { EL } from './el';
 import { msg, useMsg } from './msg';
 import Provider from './provider';
 import { QL } from './ql';
-import useRelax from './relax';
+import { Relax, useRelax } from './relax';
 import { createStore, Store } from './store';
+import { TRelaxProps } from './types';
 
-export { useRelax, createStore, Provider, QL, action, Store, useMsg, msg, EL };
+export {
+  TRelaxProps,
+  Relax,
+  useRelax,
+  createStore,
+  Provider,
+  QL,
+  action,
+  Store,
+  useMsg,
+  msg,
+  EL
+};

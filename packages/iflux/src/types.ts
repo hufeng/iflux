@@ -31,7 +31,7 @@ export interface IStoreProps<T = {}> {
 export type TSubscriber = (data: Object) => void;
 
 export interface IProviderProps<T> {
-  children?: JSX.Element;
+  children?: any;
   store: () => Store<T>;
   onMounted?: (store: Store) => void;
   onWillUnmount?: (store: Store) => void;
@@ -40,3 +40,8 @@ export interface IProviderProps<T> {
    */
   id?: string;
 }
+
+export type TRelaxProps<T> = T & {
+  setState(cb: (state: Object) => void): void;
+  dispatch(msg: string, params?: any): void;
+};
