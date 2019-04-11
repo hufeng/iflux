@@ -64,6 +64,8 @@ light-weight, Reactive and Predictable state container for React or ReactNative.
 
 ### 保持简单 -- KISS
 
+![iflux-flow](https://raw.githubusercontent.com/hufeng/iflux/4.0/screencast/iflux-flow.png)
+
 一个应用只有一个 Store，单根数据源，单向数据流动，数据沉淀在顶层。
 且通过 PureRenderMix 可以获取更好的性能。简直就是为 React 私人定制一般。
 
