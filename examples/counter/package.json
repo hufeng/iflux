@@ -1,0 +1,21 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel serve index.html",
+    "build": "parcel build index.html",
+    "compat": "parcel serve index.1.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/react": "^16.8.2",
+    "@types/react-dom": "^16.8.0",
+    "iant": "^0.0.1-alpha14",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1"
+  }
+}

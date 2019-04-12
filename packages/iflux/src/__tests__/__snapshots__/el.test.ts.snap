@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`create ql 1`] = `
+Object {
+  "deps": Array [
+    "hello",
+    Array [
+      "user",
+      "addr",
+      "province",
+    ],
+    "user.addr.city",
+  ],
+  "handler": [Function],
+  "id": 1,
+  "name": "testQL",
+}
+`;

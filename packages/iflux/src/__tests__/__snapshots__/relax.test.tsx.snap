@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test defaultInject setState and dispatch 1`] = `
+<div>
+  yes
+</div>
+`;
+
+exports[`test init 1`] = `
+Array [
+  <div>
+    1
+    test
+    test
+    yes
+    yes
+  </div>,
+  <div>
+    1
+    test
+    test
+    yes
+    yes
+  </div>,
+]
+`;
+
+exports[`test init 2`] = `
+Array [
+  <div>
+    2
+    test
+    test
+    yes
+    yes
+  </div>,
+  <div>
+    2
+    test
+    test
+    yes
+    yes
+  </div>,
+]
+`;
+
+exports[`test no subscribe 1`] = `<div />`;

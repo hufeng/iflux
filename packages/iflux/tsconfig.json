@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "target": "es5",
+    "rootDir": "./src",
+    "outDir": "./lib",
+    "declaration": true,
+    "declarationDir": "./lib/typings"
+  },
+  "exclude": ["src/__tests__/**", "__mocks__"]
+}

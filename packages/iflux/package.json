@@ -1,0 +1,26 @@
+{
+  "name": "iflux",
+  "version": "4.0.0",
+  "description": "iflux是我们探索将immutable.js和react.js更好的粘合的一种方案",
+  "main": "./lib/index.js",
+  "types": "./lib/typings/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hufeng/iflux.git"
+  },
+  "keywords": [
+    "immer",
+    "simple",
+    "reactive",
+    "functional",
+    "react",
+    "iflux"
+  ],
+  "author": "hufeng <fengmi99@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "fast-deep-equal": "^2.0.1",
+    "immer": "^2.1.5",
+    "mitt": "^1.1.3"
+  }
+}
