@@ -88,10 +88,15 @@ export function Relax(relaxProps: TRelaxPath): any {
       }
 
       componentDidMount() {
+        super.componentDidMount && super.componentDidMount();
         this._isMounted = true;
       }
 
-      shouldComponentUpdate(nextProps, nextState) {
+      shouldComponentUpdate(nextProps, nextState, nextContext) {
+        if (super.shouldComponentUpdate) {
+          return super.shouldComponentUpdate(nextProps, nextState, nextContext);
+        }
+
         if (!isEqual(nextProps, this.props)) {
           return true;
         }
@@ -109,6 +114,7 @@ export function Relax(relaxProps: TRelaxPath): any {
       }
 
       componentWillUnmount() {
+        super.componentWillUnmount && super.componentWillUnmount();
         this._isMounted = false;
         this._unsubscirbe();
       }
