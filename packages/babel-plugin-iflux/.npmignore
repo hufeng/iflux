@@ -1,0 +1,5 @@
+**/__tests__/**
+**/__mocks__/**
+tsconfig.json
+tsconfig-es6.json
+node_modules

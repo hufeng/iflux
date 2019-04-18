@@ -1,4 +1,4 @@
-import { createStore } from 'iant';
+import { createStore } from 'iflux';
 
 export interface IState {
   count: number;

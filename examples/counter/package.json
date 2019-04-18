@@ -15,6 +15,7 @@
     "@types/react": "^16.8.2",
     "@types/react-dom": "^16.8.0",
     "iant": "^0.0.1-alpha14",
+    "iflux": "^4.0.0",
     "react": "^16.8.1",
     "react-dom": "^16.8.1"
   }

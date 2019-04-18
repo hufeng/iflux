@@ -1,0 +1,12 @@
+{
+  "name": "babel-plugin-iflux",
+  "version": "1.0.0",
+  "description": "iflux babel plugin",
+  "main": "./lib/index.js",
+  "keywords": [
+    "iflux",
+    "babel-plugin"
+  ],
+  "author": "hufeng<loveruby1988@qq.com>",
+  "license": "MIT"
+}
