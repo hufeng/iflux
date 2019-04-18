@@ -20,19 +20,19 @@ export default function MainSection() {
       />
       <label htmlFor='toggle-all'>Mark all as complete</label>
       <ul className='todo-list'>
-        {todo.map((v, k) => (
+        {todo.map(v => (
           <li key={v.id}>
             <div className='view'>
               <input
                 className='toggle'
                 type='checkbox'
                 checked={v.done}
-                onChange={() => dispatch(Command.TOGGLE, k)}
+                onChange={() => dispatch(Command.TOGGLE, v.id)}
               />
               <label>{v.text}</label>
               <button
                 className='destroy'
-                onClick={() => dispatch(Command.DESTROY, k)}
+                onClick={() => dispatch(Command.DESTROY, v.id)}
               />
             </div>
           </li>

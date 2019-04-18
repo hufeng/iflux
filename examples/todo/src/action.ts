@@ -21,19 +21,21 @@ export const toggleAll = action(Command.TOGGLE_ALL, (store: Store<IState>) => {
 
 export const toggleOne = action(
   Command.TOGGLE,
-  (store: Store<IState>, index: number) => {
+  (store: Store<IState>, id: number) => {
     store.setState(data => {
-      const done = data.todo[index].done;
-      data.todo[index].done = !done;
+      const index = data.todo.findIndex(v => v.id === id);
+      if (index != -1) {
+        data.todo[index].done = !data.todo[index].done;
+      }
     });
   }
 );
 
 export const destroy = action(
   Command.DESTROY,
-  (store: Store<IState>, index: number) => {
+  (store: Store<IState>, id: number) => {
     store.setState(data => {
-      data.todo = data.todo.filter((_v, k) => k !== index);
+      data.todo = data.todo.filter(v => v.id !== id);
     });
   }
 );
