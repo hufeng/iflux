@@ -62,3 +62,31 @@ export const getPathVal = (
     return data[path];
   }
 };
+
+/**
+ * 是不是上下文的路径变量
+ * 判断是不是以@开头的
+ *
+ * 如：@goods.addr.name / ['@goods‘, 'addr', 'name']
+ * @param path
+ */
+export const isContextPathVal = (path: any) => {
+  if (isStr(path)) {
+    return path.indexOf('@') === 0;
+  } else if (isArray(path)) {
+    return ((path[0] || '') as string).indexOf('@') === 0;
+  }
+  return false;
+};
+
+/**
+ * 解析上下文路径值 {namespace: '', path: ''}
+ * @param path
+ */
+export const parseContextPathVal = (path: any) => {
+  const arr = isStr(path) ? path.split('.') : path;
+  return {
+    namespace: (arr[0] as string).replace('@', ''),
+    path: arr.slice(1)
+  };
+};

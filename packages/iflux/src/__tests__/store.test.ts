@@ -6,6 +6,7 @@ import { createStore } from '../store';
 
 it('test init store', () => {
   const store = createStore({
+    ns: 'test-store',
     state: {
       framework: {
         id: 1,
@@ -39,6 +40,7 @@ it('test init store', () => {
 
 it('test store bigQuery', () => {
   const store = createStore({
+    ns: 'bigQuery',
     state: {
       framework: {
         id: 1,
@@ -89,6 +91,7 @@ it('test effect lang', () => {
   ]);
 
   const store = createStore({
+    ns: 'el',
     el: { helloEL },
     state: {
       framework: {
@@ -112,6 +115,7 @@ it('test setState and action', () => {
   });
 
   const store = createStore({
+    ns: 'action',
     action: { changeState },
     state: {
       framework: {

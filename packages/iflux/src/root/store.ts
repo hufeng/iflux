@@ -1,68 +1,33 @@
 import produce from 'immer';
-import ReactDOM from 'react-dom';
-import { EffectLang } from './el';
-import { QueryLang } from './ql';
-import { RootStore } from './root/store';
+import { EffectLang } from '../el';
+import { QueryLang } from '../ql';
+import { Store } from '../store';
 import {
+  IRootStoreProps,
   IStoreProps,
-  TActionHandler,
   TActionRetFn,
   TPath,
-  TSubscriber
-} from './types';
-import {
-  getPathVal,
-  isArray,
-  isContextPathVal,
-  isStr,
-  parseContextPathVal
-} from './util';
+  TRootActionHandler
+} from '../types';
+import { getPathVal, isArray, isStr } from '../util';
 
 /**
- * 是不是可以批量处理
- * ReactDOM unstable_batchedUpdates 可以很酷的解决父子组件级联渲染的问题
- * 可惜 Preact 不支持，只能靠 Immutable 的不可变这个特性来挡着了
- * 在 react-native 环境中，unstable_batchedUpdates 是在 react-native 对象中
- * 如果是小程序，直接使用babel-plugin-iflux抹掉
- * 所以我们的 babel-plugin-iflux 就是去解决这个问题
+ *  Root state container
  */
-const batchedUpdates =
-  ReactDOM.unstable_batchedUpdates ||
-  function(cb: Function) {
-    cb();
-  };
-
-/**
- * state container
- */
-export class Store<T = any> {
-  //当前的debug状态
+export class RootStore<T = any> {
   public debug: boolean;
-  //当前store的命名空间
-  public ns: string;
-
   private _state: T;
   private _el: Array<Function>;
-  private _rootContext: RootStore | null;
-  private _subscribe: Array<TSubscriber>;
   private _cache: { [key: number]: Array<any> };
-  private _action: { [name: string]: TActionHandler };
+  private _action: { [name: string]: TRootActionHandler };
+  private _zoneMapper: { [name: string]: Store };
 
-  constructor(props: IStoreProps<T>) {
-    const { debug, state = {}, el = {}, action = {}, ns } = props;
-
-    //namespace必传
-    if (process.env.NODE_ENV !== 'production') {
-      if (typeof ns === 'undefined') {
-        throw new Error('Please specify namespace in store');
-      }
-    }
+  constructor(props: IRootStoreProps<T>) {
+    const { debug, state = {}, el = {}, action = {} } = props;
 
     this._cache = {};
-    this._subscribe = [];
+    this._zoneMapper = {};
 
-    this.ns = ns;
-    this._rootContext = null;
     this.debug = debug || false;
     this._state = state as T;
     this._el = this._transformEl(el);
@@ -147,7 +112,7 @@ export class Store<T = any> {
 
   private _reduceAction(actions: {
     [name: string]: TActionRetFn;
-  }): { [name: string]: TActionHandler } {
+  }): { [name: string]: TRootActionHandler } {
     return Object.keys(actions).reduce((r, key) => {
       const action = actions[key];
       const { msg, handler } = action();
@@ -156,12 +121,7 @@ export class Store<T = any> {
     }, {});
   }
 
-  dispatch = (action: string, params?: Object, isGlobal: boolean = false) => {
-    if (isGlobal && this._rootContext != null) {
-      this._rootContext.dispatchGlobal(action, params);
-      return;
-    }
-
+  dispatch = (action: string, params?: any) => {
     //debug log
     if (process.env.NODE_ENV !== 'production') {
       if (this.debug) {
@@ -194,6 +154,46 @@ export class Store<T = any> {
     handler(this, params);
   };
 
+  dispatchGlobal = (msg: string, params?: any) => {
+    if (process.env.NODE_ENV !== 'production') {
+      if (this.debug) {
+        console.log(`dispatch global msg -> ${msg}`);
+        console.log('params->', params);
+      }
+    }
+
+    //dispatch root
+    const handler = this._action[msg];
+    if (handler) {
+      //debug log
+      if (process.env.NODE_ENV !== 'production') {
+        if (this.debug) {
+          console.log(`Root: handle -> ${msg} `);
+        }
+      }
+
+      handler(this, params);
+    }
+
+    for (let namespace in this._zoneMapper) {
+      if (this._zoneMapper.hasOwnProperty(namespace)) {
+        const store = this._zoneMapper[namespace];
+        const handler = store.getAction()[msg];
+
+        if (handler) {
+          //debug log
+          if (process.env.NODE_ENV !== 'production') {
+            if (this.debug) {
+              console.log(`Root: handle -> ${msg} `);
+            }
+          }
+
+          handler(store, params);
+        }
+      }
+    }
+  };
+
   getState() {
     return Object.freeze(this._state);
   }
@@ -203,41 +203,19 @@ export class Store<T = any> {
     if (state !== this._state) {
       this._state = state as T;
       this._computeEL();
-      //update ui
-      this.notifyRelax();
+
+      //通知所有的relax告诉大家root的state更新拉
+      //relax会根据注入的属性判断是不是需要更新
+      for (let namespace in this._zoneMapper) {
+        if (this._zoneMapper.hasOwnProperty(namespace)) {
+          this._zoneMapper[namespace].notifyRelax('root');
+        }
+      }
     }
   };
 
-  notifyRelax = (ns: string = '') => {
-    //update ui
-    batchedUpdates(() => {
-      for (let subscribe of this._subscribe) {
-        subscribe(ns || this.ns, this._state);
-      }
-    });
-  };
-
   bigQuery = (query: TPath | QueryLang) => {
-    //如果当前是上下文的路径变量
-    if (isContextPathVal(query)) {
-      //解析上下文 , 如{namespace: 'goods', ['addr', 'province']}
-      const { namespace, path } = parseContextPathVal(query);
-      if (this._rootContext) {
-        if (namespace === 'root') {
-          return getPathVal(this._rootContext.getState(), path);
-        } else {
-          const store = this._rootContext.getZoneMapper[namespace] as Store;
-          return getPathVal(store.getState(), path);
-        }
-      } else {
-        if (process.env.NODE_ENV !== 'production') {
-          console.warn(
-            `Cound not find namespace:#${namespace} -> path: ${path}, You should set <Root/> and namespace`
-          );
-        }
-        return;
-      }
-    } else if (isStr(query) || isArray(query)) {
+    if (isStr(query) || isArray(query)) {
       return getPathVal(this._state, query);
     } else if (query instanceof QueryLang) {
       let isChanged = false;
@@ -304,32 +282,38 @@ export class Store<T = any> {
     }
   };
 
-  subscribe = (callback: TSubscriber) => {
-    let index = this._subscribe.indexOf(callback);
-    if (index === -1) {
-      this._subscribe.push(callback);
-    }
-
-    return () => {
-      let index = this._subscribe.indexOf(callback);
-      if (index !== -1) {
-        this._subscribe.splice(index, 1);
+  setZoneMapper(namespace: string, store: Store) {
+    this._zoneMapper[namespace] = store;
+    store.subscribe(() => {
+      for (let ns in this._zoneMapper) {
+        if (this._zoneMapper.hasOwnProperty(ns)) {
+          if (ns !== namespace) {
+            this._zoneMapper[ns].notifyRelax();
+          }
+        }
       }
-    };
-  };
-
-  setRootContext(context: RootStore) {
-    this._rootContext = context;
+    });
   }
 
-  getAction() {
-    return this._action;
+  removeZoneMapper(namespace: string) {
+    delete this._zoneMapper[namespace];
+  }
+
+  getZoneMapper() {
+    return this._zoneMapper;
   }
 
   //=====================debug===========================
   pprint() {
     if (process.env.NODE_ENV !== 'production') {
-      console.log(JSON.stringify(this._state, null, 2));
+      const state = { root: this.getState() };
+      for (let namespace in this._zoneMapper) {
+        if (this._zoneMapper.hasOwnProperty(namespace)) {
+          state[namespace] = this._zoneMapper[namespace].getState();
+        }
+      }
+
+      console.log(JSON.stringify(state, null, 2));
     }
   }
 
@@ -342,6 +326,6 @@ export class Store<T = any> {
 
 //factory method
 //avoid singleton
-export function createStore<T>(props: IStoreProps<T>) {
-  return () => new Store<T>(props);
+export function createRootStore<T>(props: IStoreProps<T>) {
+  return () => new RootStore<T>(props);
 }

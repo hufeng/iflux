@@ -7,8 +7,10 @@ import { isArray, isObj, isStr } from './util';
 
 //==========================relax hook==============================
 export function useRelax<T = {}>(props: TRelaxPath = [], name: string = '') {
+  //获取当前的store的上下文
   const store: Store = useContext(StoreContext);
   const relaxPropsMapper = reduceRelaxPropsMapper(props);
+  const namespaces = reduceRelaxNamespaceProps(relaxPropsMapper);
   const relaxData = computeRelaxProps<T>(store, relaxPropsMapper);
   const [relax, updateState] = useState(relaxData);
 
@@ -33,17 +35,20 @@ export function useRelax<T = {}>(props: TRelaxPath = [], name: string = '') {
       return noop;
     }
 
-    return store.subscribe(() => {
-      const newState = computeRelaxProps<T>(store, relaxPropsMapper);
-      if (!isEqual(newState, preRelax.current)) {
-        if (process.env.NODE_ENV !== 'production') {
-          if (store.debug && name) {
-            //@ts-ignore
-            const { setState, dispatch, ...rest } = newState;
-            console.log(`Relax(${name})-update:`, rest);
+    return store.subscribe((ns: string) => {
+      //过滤namespace
+      if (ns === store.ns || namespaces.indexOf(ns) !== -1) {
+        const newState = computeRelaxProps<T>(store, relaxPropsMapper);
+        if (!isEqual(newState, preRelax.current)) {
+          if (process.env.NODE_ENV !== 'production') {
+            if (store.debug && name) {
+              //@ts-ignore
+              const { setState, dispatch, ...rest } = newState;
+              console.log(`Relax(${name})-update:`, rest);
+            }
           }
+          updateState(newState);
         }
-        updateState(newState);
       }
     });
   }, []);
@@ -68,6 +73,7 @@ export function Relax(relaxProps: TRelaxPath): any {
       };
       _isRx: boolean;
       _unsubscirbe: Function;
+      _ns: Array<string>;
 
       constructor(props: Object, ctx) {
         super(props);
@@ -75,6 +81,7 @@ export function Relax(relaxProps: TRelaxPath): any {
         this._isMounted = false;
 
         this._relaxPropsMapper = reduceRelaxPropsMapper(relaxProps);
+        this._ns = reduceRelaxNamespaceProps(this._relaxPropsMapper);
         this.relaxProps = computeRelaxProps(
           this._store,
           this._relaxPropsMapper
@@ -92,7 +99,11 @@ export function Relax(relaxProps: TRelaxPath): any {
         this._isMounted = true;
       }
 
-      shouldComponentUpdate(nextProps, nextState, nextContext) {
+      shouldComponentUpdate(
+        nextProps: Object,
+        nextState: Object,
+        nextContext: Object
+      ) {
         if (super.shouldComponentUpdate) {
           return super.shouldComponentUpdate(nextProps, nextState, nextContext);
         }
@@ -119,8 +130,13 @@ export function Relax(relaxProps: TRelaxPath): any {
         this._unsubscirbe();
       }
 
-      _handleRx = (state: Object) => {
-        if (this._isMounted) {
+      _handleRx = (ns: string, state: Object) => {
+        const isMounted = this._isMounted;
+        //过滤namespace
+        const isBelongToNS =
+          ns === this._store.ns || this._ns.indexOf(ns) !== -1;
+
+        if (isMounted && isBelongToNS) {
           this.setState({
             storeState: state
           });
@@ -128,6 +144,27 @@ export function Relax(relaxProps: TRelaxPath): any {
       };
     };
   };
+}
+
+/**
+ * 获取所有的命名空间
+ */
+function reduceRelaxNamespaceProps(relaxProps: {
+  [name: string]: Array<string | number> | string;
+}) {
+  let namespaces = [] as Array<string>;
+
+  for (let name in relaxProps) {
+    if (relaxProps.hasOwnProperty(name)) {
+      const path = relaxProps[name];
+      const ns = path[0] as string;
+      if (ns.indexOf('@') === 0) {
+        namespaces.push(ns);
+      }
+    }
+  }
+
+  return namespaces;
 }
 
 function isRx(relaxProps: Array<any> = []) {
