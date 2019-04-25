@@ -36,9 +36,13 @@ export function useRelax<T = {}>(props: TRelaxPath = [], name: string = '') {
     }
 
     return store.subscribe((ns: string) => {
+      console.log('receiv->', ns);
+      console.log(ns === store.ns, namespaces.indexOf(ns) !== -1);
+
       //过滤namespace
       if (ns === store.ns || namespaces.indexOf(ns) !== -1) {
         const newState = computeRelaxProps<T>(store, relaxPropsMapper);
+        console.log(!isEqual(newState, preRelax.current));
         if (!isEqual(newState, preRelax.current)) {
           if (process.env.NODE_ENV !== 'production') {
             if (store.debug && name) {
@@ -47,6 +51,7 @@ export function useRelax<T = {}>(props: TRelaxPath = [], name: string = '') {
               console.log(`Relax(${name})-update:`, rest);
             }
           }
+          console.log('----update---');
           updateState(newState);
         }
       }

@@ -4,7 +4,6 @@ import { QueryLang } from '../ql';
 import { Store } from '../store';
 import {
   IRootStoreProps,
-  IStoreProps,
   TActionRetFn,
   TPath,
   TRootActionHandler
@@ -16,17 +15,18 @@ import { getPathVal, isArray, isStr } from '../util';
  */
 export class RootStore<T = any> {
   public debug: boolean;
+  public zoneMapper: { [name: string]: Store };
+
   private _state: T;
   private _el: Array<Function>;
   private _cache: { [key: number]: Array<any> };
   private _action: { [name: string]: TRootActionHandler };
-  private _zoneMapper: { [name: string]: Store };
 
   constructor(props: IRootStoreProps<T>) {
     const { debug, state = {}, el = {}, action = {} } = props;
 
     this._cache = {};
-    this._zoneMapper = {};
+    this.zoneMapper = {};
 
     this.debug = debug || false;
     this._state = state as T;
@@ -164,6 +164,7 @@ export class RootStore<T = any> {
 
     //dispatch root
     const handler = this._action[msg];
+
     if (handler) {
       //debug log
       if (process.env.NODE_ENV !== 'production') {
@@ -175,16 +176,16 @@ export class RootStore<T = any> {
       handler(this, params);
     }
 
-    for (let namespace in this._zoneMapper) {
-      if (this._zoneMapper.hasOwnProperty(namespace)) {
-        const store = this._zoneMapper[namespace];
+    for (let namespace in this.zoneMapper) {
+      if (this.zoneMapper.hasOwnProperty(namespace)) {
+        const store = this.zoneMapper[namespace];
         const handler = store.getAction()[msg];
 
         if (handler) {
           //debug log
           if (process.env.NODE_ENV !== 'production') {
             if (this.debug) {
-              console.log(`Root: handle -> ${msg} `);
+              console.log(`${namespace}: handle -> ${msg} `);
             }
           }
 
@@ -206,9 +207,9 @@ export class RootStore<T = any> {
 
       //通知所有的relax告诉大家root的state更新拉
       //relax会根据注入的属性判断是不是需要更新
-      for (let namespace in this._zoneMapper) {
-        if (this._zoneMapper.hasOwnProperty(namespace)) {
-          this._zoneMapper[namespace].notifyRelax('root');
+      for (let namespace in this.zoneMapper) {
+        if (this.zoneMapper.hasOwnProperty(namespace)) {
+          this.zoneMapper[namespace].notifyRelax('root');
         }
       }
     }
@@ -282,34 +283,24 @@ export class RootStore<T = any> {
     }
   };
 
-  setZoneMapper(namespace: string, store: Store) {
-    this._zoneMapper[namespace] = store;
-    store.subscribe(() => {
-      for (let ns in this._zoneMapper) {
-        if (this._zoneMapper.hasOwnProperty(ns)) {
-          if (ns !== namespace) {
-            this._zoneMapper[ns].notifyRelax();
-          }
-        }
-      }
-    });
+  addZone(namespace: string, store: Store) {
+    if (this.zoneMapper[namespace]) {
+      return;
+    }
+    this.zoneMapper[namespace] = store;
   }
 
-  removeZoneMapper(namespace: string) {
-    delete this._zoneMapper[namespace];
-  }
-
-  getZoneMapper() {
-    return this._zoneMapper;
+  removeZone(namespace: string) {
+    delete this.zoneMapper[namespace];
   }
 
   //=====================debug===========================
   pprint() {
     if (process.env.NODE_ENV !== 'production') {
       const state = { root: this.getState() };
-      for (let namespace in this._zoneMapper) {
-        if (this._zoneMapper.hasOwnProperty(namespace)) {
-          state[namespace] = this._zoneMapper[namespace].getState();
+      for (let namespace in this.zoneMapper) {
+        if (this.zoneMapper.hasOwnProperty(namespace)) {
+          state[namespace] = this.zoneMapper[namespace].getState();
         }
       }
 
@@ -326,6 +317,6 @@ export class RootStore<T = any> {
 
 //factory method
 //avoid singleton
-export function createRootStore<T>(props: IStoreProps<T>) {
+export function createRootStore<T>(props: IRootStoreProps<T>) {
   return () => new RootStore<T>(props);
 }

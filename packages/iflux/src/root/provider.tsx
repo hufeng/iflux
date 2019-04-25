@@ -22,7 +22,7 @@ export default class RootProvider extends React.Component<IRootProviderProps> {
     // debug log
     if (process.env.NODE_ENV !== 'production') {
       if (this.store.debug) {
-        const { version } = require('../package.json');
+        const { version } = require('../../package.json');
         console.log(`iflux@${version}`);
         console.log('RootProvider enable debug mode');
         (global || window)['Root'] = { store: this.store };

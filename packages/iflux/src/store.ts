@@ -199,12 +199,12 @@ export class Store<T = any> {
   }
 
   setState = (callback: (data: T) => void) => {
-    const state = produce(this._state, callback as any);
-    if (state !== this._state) {
-      this._state = state as T;
-      this._computeEL();
+    const newState = produce(this._state, callback as any);
+    if (newState !== this._state) {
+      this._state = newState as T;
       //update ui
       this.notifyRelax();
+      this._computeEL();
     }
   };
 
@@ -226,13 +226,13 @@ export class Store<T = any> {
         if (namespace === 'root') {
           return getPathVal(this._rootContext.getState(), path);
         } else {
-          const store = this._rootContext.getZoneMapper[namespace] as Store;
+          const store = this._rootContext.zoneMapper[namespace] as Store;
           return getPathVal(store.getState(), path);
         }
       } else {
         if (process.env.NODE_ENV !== 'production') {
           console.warn(
-            `Cound not find namespace:#${namespace} -> path: ${path}, You should set <Root/> and namespace`
+            `Cound not find namespace -> '${namespace}' path -> '${path}', You should set <Root/> and namespace`
           );
         }
         return;

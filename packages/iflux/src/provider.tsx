@@ -14,9 +14,11 @@ export default class Provider<T> extends React.Component<IProviderProps<T>> {
 
   static contextType = RootContext;
   store: Store<T>;
+  private _ctx: RootStore;
 
   constructor(props, ctx: RootStore) {
     super(props);
+    this._ctx = ctx;
     //初始化store
     this.store = this.props.store();
 
@@ -26,7 +28,7 @@ export default class Provider<T> extends React.Component<IProviderProps<T>> {
     //见证奇迹的时刻
     if (ctx instanceof RootStore) {
       const namespace = this.store.ns;
-      ctx.setZoneMapper(namespace, this.store);
+      ctx.addZone(namespace, this.store);
       this.store.setRootContext(ctx);
     }
 
@@ -48,6 +50,9 @@ export default class Provider<T> extends React.Component<IProviderProps<T>> {
 
   componentWillUnmount() {
     this.props.onWillUnmount && this.props.onWillUnmount(this.store);
+    if (this._ctx instanceof RootStore) {
+      this._ctx.removeZone(this.store.ns);
+    }
   }
 
   render() {
