@@ -58,6 +58,9 @@ export class Store<T = any> {
       }
     }
 
+    //如果设置了namespace才加入到rootContext
+    //这样可以节约一点memoryq
+
     this._cache = {};
     this._subscribe = [];
 
@@ -320,6 +323,10 @@ export class Store<T = any> {
 
   setRootContext(context: RootStore) {
     this._rootContext = context;
+  }
+
+  getRootContext() {
+    return this._rootContext;
   }
 
   getAction() {

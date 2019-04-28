@@ -136,12 +136,14 @@ Object {
     "_state": Object {
       "text": "hello root store",
     },
+    "_subscribe": Array [],
     "_transformEl": [Function],
     "bigQuery": [Function],
     "debug": true,
     "dispatch": [Function],
     "dispatchGlobal": [Function],
     "setState": [Function],
+    "subscribe": [Function],
     "zoneMapper": Object {
       "app1": Store {
         "_action": Object {
@@ -156,6 +158,7 @@ Object {
           "text": "hello app1",
         },
         "_subscribe": Array [
+          [Function],
           [Function],
         ],
         "_transformEl": [Function],
@@ -180,6 +183,7 @@ Object {
           "text": "hello app2",
         },
         "_subscribe": Array [
+          [Function],
           [Function],
         ],
         "_transformEl": [Function],
@@ -248,7 +252,7 @@ Array [
       hello app2
     </div>
     <div>
-      hello app1
+      hello app1 inc
     </div>
     <a
       href="javascript:void(0);"
@@ -352,7 +356,7 @@ Array [
        
     </div>
     <div>
-      hello app2
+      hello app2 inc
     </div>
     <a
       href="javascript:void(0);"

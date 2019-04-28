@@ -6,7 +6,8 @@ import {
   IRootStoreProps,
   TActionRetFn,
   TPath,
-  TRootActionHandler
+  TRootActionHandler,
+  TSubscriber
 } from '../types';
 import { getPathVal, isArray, isStr } from '../util';
 
@@ -19,6 +20,7 @@ export class RootStore<T = any> {
 
   private _state: T;
   private _el: Array<Function>;
+  private _subscribe: Array<TSubscriber>;
   private _cache: { [key: number]: Array<any> };
   private _action: { [name: string]: TRootActionHandler };
 
@@ -27,6 +29,7 @@ export class RootStore<T = any> {
 
     this._cache = {};
     this.zoneMapper = {};
+    this._subscribe = [];
 
     this.debug = debug || false;
     this._state = state as T;
@@ -281,6 +284,20 @@ export class RootStore<T = any> {
         return this._cache[id][len];
       }
     }
+  };
+
+  subscribe = (callback: TSubscriber) => {
+    let index = this._subscribe.indexOf(callback);
+    if (index === -1) {
+      this._subscribe.push(callback);
+    }
+
+    return () => {
+      let index = this._subscribe.indexOf(callback);
+      if (index !== -1) {
+        this._subscribe.splice(index, 1);
+      }
+    };
   };
 
   addZone(namespace: string, store: Store) {

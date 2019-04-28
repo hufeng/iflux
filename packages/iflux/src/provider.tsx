@@ -50,6 +50,9 @@ export default class Provider<T> extends React.Component<IProviderProps<T>> {
 
   componentWillUnmount() {
     this.props.onWillUnmount && this.props.onWillUnmount(this.store);
+
+    //如果当前的rootContext不为空，销毁当前的store
+    //可以在store扩展参数，是不是可以不销毁
     if (this._ctx instanceof RootStore) {
       this._ctx.removeZone(this.store.ns);
     }

@@ -5,7 +5,13 @@ import { Store } from './store';
 import { TRelaxPath } from './types';
 import { isArray, isObj, isStr } from './util';
 
-//==========================relax hook==============================
+/**
+ * 获取数据从当前的store获取，因为当前的store会获取rootContext
+ * 然后获取各个namespace下的参数
+ *
+ * 更新时候单独监听每个other store，做增量更新
+ */
+
 export function useRelax<T = {}>(props: TRelaxPath = [], name: string = '') {
   //获取当前的store的上下文
   const store: Store = useContext(StoreContext);
@@ -29,33 +35,42 @@ export function useRelax<T = {}>(props: TRelaxPath = [], name: string = '') {
     }
   }
 
+  const updateRelax = (store: Store) => () => {
+    const newState = computeRelaxProps<T>(store, relaxPropsMapper);
+    if (!isEqual(newState, preRelax.current)) {
+      if (process.env.NODE_ENV !== 'production') {
+        if (store.debug && name) {
+          //@ts-ignore
+          const { setState, dispatch, ...rest } = newState;
+          console.log(`Relax(${name})-update:`, rest);
+        }
+      }
+      updateState(newState);
+    }
+  };
+
   //only componentDidMount && componentWillUnmount
   useEffect(() => {
     if (!isRx(props)) {
       return noop;
     }
-
-    return store.subscribe((ns: string) => {
-      console.log('receiv->', ns);
-      console.log(ns === store.ns, namespaces.indexOf(ns) !== -1);
-
-      //过滤namespace
-      if (ns === store.ns || namespaces.indexOf(ns) !== -1) {
-        const newState = computeRelaxProps<T>(store, relaxPropsMapper);
-        console.log(!isEqual(newState, preRelax.current));
-        if (!isEqual(newState, preRelax.current)) {
-          if (process.env.NODE_ENV !== 'production') {
-            if (store.debug && name) {
-              //@ts-ignore
-              const { setState, dispatch, ...rest } = newState;
-              console.log(`Relax(${name})-update:`, rest);
-            }
-          }
-          console.log('----update---');
-          updateState(newState);
+    // 获取当前的root上下文
+    const rootContext = store.getRootContext();
+    if (rootContext) {
+      const { ns } = store;
+      const allNamespaces = [ns, ...namespaces];
+      const unsubscribeArr = allNamespaces.map(ns => {
+        const _store = rootContext.zoneMapper[ns];
+        return _store.subscribe(updateRelax(store));
+      });
+      return () => {
+        for (let unsubscribe of unsubscribeArr) {
+          unsubscribe();
         }
-      }
-    });
+      };
+    } else {
+      return store.subscribe(updateRelax(store));
+    }
   }, []);
 
   return relax;
@@ -164,7 +179,7 @@ function reduceRelaxNamespaceProps(relaxProps: {
       const path = relaxProps[name];
       const ns = path[0] as string;
       if (ns.indexOf('@') === 0) {
-        namespaces.push(ns);
+        namespaces.push(ns.replace('@', ''));
       }
     }
   }
