@@ -1,0 +1,367 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App1 test init 1`] = `
+<div>
+  <a
+    href="javascript:void(0);"
+    onClick={[Function]}
+  >
+    dec
+  </a>
+  <div>
+    hello app1
+  </div>
+  <a
+    href="javascript:void(0);"
+    onClick={[Function]}
+  >
+    inc
+  </a>
+</div>
+`;
+
+exports[`App2 basic 1`] = `
+<div>
+  <a
+    href="javascript:void(0);"
+    onClick={[Function]}
+  >
+    dec
+  </a>
+  <div>
+    hello app2
+  </div>
+  <div />
+  <a
+    href="javascript:void(0);"
+    onClick={[Function]}
+  >
+    inc
+  </a>
+</div>
+`;
+
+exports[`app2 test update 1`] = `
+<div>
+  <a
+    href="javascript:void(0);"
+    onClick={[Function]}
+  >
+    dec
+  </a>
+  <div>
+    hello app2 inc
+  </div>
+  <div />
+  <a
+    href="javascript:void(0);"
+    onClick={[Function]}
+  >
+    inc
+  </a>
+</div>
+`;
+
+exports[`test basic root provider 1`] = `
+Array [
+  <div>
+    <a
+      href="javascript:void(0);"
+      onClick={[Function]}
+    >
+      dec
+    </a>
+    <div>
+      hello app1
+    </div>
+    <a
+      href="javascript:void(0);"
+      onClick={[Function]}
+    >
+      inc
+    </a>
+  </div>,
+  <div>
+    <a
+      href="javascript:void(0);"
+      onClick={[Function]}
+    >
+      dec
+    </a>
+    <div>
+      hello app2
+    </div>
+    <div>
+      hello app1
+    </div>
+    <a
+      href="javascript:void(0);"
+      onClick={[Function]}
+    >
+      inc
+    </a>
+  </div>,
+  <div>
+    <a
+      href="javascript:void(0);"
+      onClick={[Function]}
+    >
+      dec
+    </a>
+    <div>
+      hello app3
+       
+    </div>
+    <div>
+      hello app2
+    </div>
+    <a
+      href="javascript:void(0);"
+      onClick={[Function]}
+    >
+      inc
+    </a>
+  </div>,
+]
+`;
+
+exports[`test basic root provider 2`] = `
+Object {
+  "store": RootStore {
+    "_action": Object {},
+    "_cache": Object {},
+    "_computeEL": [Function],
+    "_el": Array [],
+    "_parseEL": [Function],
+    "_state": Object {
+      "text": "hello root store",
+    },
+    "_transformEl": [Function],
+    "bigQuery": [Function],
+    "debug": true,
+    "dispatch": [Function],
+    "dispatchGlobal": [Function],
+    "setState": [Function],
+    "zoneMapper": Object {
+      "app1": Store {
+        "_action": Object {
+          "inc": [Function],
+        },
+        "_cache": Object {},
+        "_computeEL": [Function],
+        "_el": Array [],
+        "_parseEL": [Function],
+        "_rootContext": [Circular],
+        "_state": Object {
+          "text": "hello app1",
+        },
+        "_subscribe": Array [
+          [Function],
+          [Function],
+        ],
+        "_transformEl": [Function],
+        "bigQuery": [Function],
+        "debug": true,
+        "dispatch": [Function],
+        "notifyRelax": [Function],
+        "ns": "app1",
+        "setState": [Function],
+        "subscribe": [Function],
+      },
+      "app2": Store {
+        "_action": Object {
+          "inc": [Function],
+        },
+        "_cache": Object {},
+        "_computeEL": [Function],
+        "_el": Array [],
+        "_parseEL": [Function],
+        "_rootContext": [Circular],
+        "_state": Object {
+          "text": "hello app2",
+        },
+        "_subscribe": Array [
+          [Function],
+          [Function],
+        ],
+        "_transformEl": [Function],
+        "bigQuery": [Function],
+        "debug": false,
+        "dispatch": [Function],
+        "notifyRelax": [Function],
+        "ns": "app2",
+        "setState": [Function],
+        "subscribe": [Function],
+      },
+      "app3": Store {
+        "_action": Object {},
+        "_cache": Object {},
+        "_computeEL": [Function],
+        "_el": Array [],
+        "_parseEL": [Function],
+        "_rootContext": [Circular],
+        "_state": Object {
+          "text": "hello app3",
+        },
+        "_subscribe": Array [
+          [Function],
+        ],
+        "_transformEl": [Function],
+        "bigQuery": [Function],
+        "debug": true,
+        "dispatch": [Function],
+        "notifyRelax": [Function],
+        "ns": "app3",
+        "setState": [Function],
+        "subscribe": [Function],
+      },
+    },
+  },
+}
+`;
+
+exports[`test update app 1`] = `
+Array [
+  <div>
+    <a
+      href="javascript:void(0);"
+      onClick={[Function]}
+    >
+      dec
+    </a>
+    <div>
+      hello app1 inc
+    </div>
+    <a
+      href="javascript:void(0);"
+      onClick={[Function]}
+    >
+      inc
+    </a>
+  </div>,
+  <div>
+    <a
+      href="javascript:void(0);"
+      onClick={[Function]}
+    >
+      dec
+    </a>
+    <div>
+      hello app2
+    </div>
+    <div>
+      hello app1 inc
+    </div>
+    <a
+      href="javascript:void(0);"
+      onClick={[Function]}
+    >
+      inc
+    </a>
+  </div>,
+  <div>
+    <a
+      href="javascript:void(0);"
+      onClick={[Function]}
+    >
+      dec
+    </a>
+    <div>
+      hello app3
+       
+    </div>
+    <div>
+      hello app2
+    </div>
+    <a
+      href="javascript:void(0);"
+      onClick={[Function]}
+    >
+      inc
+    </a>
+  </div>,
+]
+`;
+
+exports[`test update app1 1`] = `
+<div>
+  <a
+    href="javascript:void(0);"
+    onClick={[Function]}
+  >
+    dec
+  </a>
+  <div>
+    hello app1 inc
+  </div>
+  <a
+    href="javascript:void(0);"
+    onClick={[Function]}
+  >
+    inc
+  </a>
+</div>
+`;
+
+exports[`test update global 1`] = `
+Array [
+  <div>
+    <a
+      href="javascript:void(0);"
+      onClick={[Function]}
+    >
+      dec
+    </a>
+    <div>
+      hello app1 inc
+    </div>
+    <a
+      href="javascript:void(0);"
+      onClick={[Function]}
+    >
+      inc
+    </a>
+  </div>,
+  <div>
+    <a
+      href="javascript:void(0);"
+      onClick={[Function]}
+    >
+      dec
+    </a>
+    <div>
+      hello app2 inc
+    </div>
+    <div>
+      hello app1 inc
+    </div>
+    <a
+      href="javascript:void(0);"
+      onClick={[Function]}
+    >
+      inc
+    </a>
+  </div>,
+  <div>
+    <a
+      href="javascript:void(0);"
+      onClick={[Function]}
+    >
+      dec
+    </a>
+    <div>
+      hello app3
+       
+    </div>
+    <div>
+      hello app2 inc
+    </div>
+    <a
+      href="javascript:void(0);"
+      onClick={[Function]}
+    >
+      inc
+    </a>
+  </div>,
+]
+`;

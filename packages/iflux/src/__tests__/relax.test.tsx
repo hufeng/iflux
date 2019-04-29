@@ -11,6 +11,7 @@ type TProps = {
 };
 
 const store = createStore({
+  ns: 'relax-test',
   debug: true,
   state: {
     name: 'test',
@@ -60,7 +61,7 @@ class RelaxTest extends React.Component {
 }
 
 const TestApp = () => (
-  <Provider store={store} id='TestApp'>
+  <Provider store={store}>
     <TestRelax />
     <RelaxTest />
   </Provider>
@@ -71,7 +72,7 @@ it('test init', () => {
   expect(tree).toMatchSnapshot();
 
   act(() => {
-    global['TestApp'].store.setState(state => {
+    global['relax-test'].store.setState(state => {
       state.list[0].id = 2;
     });
   });

@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App1 test init 1`] = `
+<div>
+  <a
+    href="javascript:void(0);"
+    onClick={[Function]}
+  >
+    dec
+  </a>
+  <div>
+    hello app1
+  </div>
+  <a
+    href="javascript:void(0);"
+    onClick={[Function]}
+  >
+    inc
+  </a>
+</div>
+`;
+
+exports[`test update app1 1`] = `
+<div>
+  <a
+    href="javascript:void(0);"
+    onClick={[Function]}
+  >
+    dec
+  </a>
+  <div>
+    hello app1 inc
+  </div>
+  <a
+    href="javascript:void(0);"
+    onClick={[Function]}
+  >
+    inc
+  </a>
+</div>
+`;

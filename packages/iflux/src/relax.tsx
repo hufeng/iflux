@@ -5,10 +5,18 @@ import { Store } from './store';
 import { TRelaxPath } from './types';
 import { isArray, isObj, isStr } from './util';
 
-//==========================relax hook==============================
+/**
+ * 获取数据从当前的store获取，因为当前的store会获取rootContext
+ * 然后获取各个namespace下的参数
+ *
+ * 更新时候单独监听每个other store，做增量更新
+ */
+
 export function useRelax<T = {}>(props: TRelaxPath = [], name: string = '') {
+  //获取当前的store的上下文
   const store: Store = useContext(StoreContext);
   const relaxPropsMapper = reduceRelaxPropsMapper(props);
+  const namespaces = reduceRelaxNamespaceProps(relaxPropsMapper);
   const relaxData = computeRelaxProps<T>(store, relaxPropsMapper);
   const [relax, updateState] = useState(relaxData);
 
@@ -27,25 +35,44 @@ export function useRelax<T = {}>(props: TRelaxPath = [], name: string = '') {
     }
   }
 
+  const updateRelax = (store: Store) => () => {
+    const newState = computeRelaxProps<T>(store, relaxPropsMapper);
+    if (!isEqual(newState, preRelax.current)) {
+      if (process.env.NODE_ENV !== 'production') {
+        if (store.debug && name) {
+          //@ts-ignore
+          const { setState, dispatch, ...rest } = newState;
+          console.log(`Relax(${name})-update:`, rest);
+        }
+      }
+      updateState(newState);
+    }
+  };
+
   //only componentDidMount && componentWillUnmount
   useEffect(() => {
     if (!isRx(props)) {
       return noop;
     }
+    // 获取当前的root上下文
+    const rootContext = store.getRootContext();
+    if (rootContext) {
+      const unsubscribeStore = store.subscribe(updateRelax(store));
+      // 订阅所有的更新
+      const unsubscribeNamespace = namespaces.map(ns => {
+        const _store = rootContext.zoneMapper[ns];
+        return _store.subscribe(updateRelax(store));
+      });
 
-    return store.subscribe(() => {
-      const newState = computeRelaxProps<T>(store, relaxPropsMapper);
-      if (!isEqual(newState, preRelax.current)) {
-        if (process.env.NODE_ENV !== 'production') {
-          if (store.debug && name) {
-            //@ts-ignore
-            const { setState, dispatch, ...rest } = newState;
-            console.log(`Relax(${name})-update:`, rest);
-          }
+      return () => {
+        unsubscribeStore();
+        for (let unsubscribe of unsubscribeNamespace) {
+          unsubscribe();
         }
-        updateState(newState);
-      }
-    });
+      };
+    } else {
+      return store.subscribe(updateRelax(store));
+    }
   }, []);
 
   return relax;
@@ -67,7 +94,8 @@ export function Relax(relaxProps: TRelaxPath): any {
         [name: string]: Array<string | number> | string;
       };
       _isRx: boolean;
-      _unsubscirbe: Function;
+      _unsubscirbe: Array<Function>;
+      _ns: Array<string>;
 
       constructor(props: Object, ctx) {
         super(props);
@@ -75,24 +103,46 @@ export function Relax(relaxProps: TRelaxPath): any {
         this._isMounted = false;
 
         this._relaxPropsMapper = reduceRelaxPropsMapper(relaxProps);
+        this._ns = reduceRelaxNamespaceProps(this._relaxPropsMapper);
         this.relaxProps = computeRelaxProps(
           this._store,
           this._relaxPropsMapper
         );
 
         this._isRx = isRx(relaxProps);
-        this._unsubscirbe = noop;
-        if (this._isRx) {
-          this._unsubscirbe = this._store.subscribe(this._handleRx);
-        }
+        this._unsubscirbe = [];
       }
 
       componentDidMount() {
         super.componentDidMount && super.componentDidMount();
         this._isMounted = true;
+
+        //如果当前的relaxProps没有数据，就不去绑定任何的更新事件
+        if (!this._isRx) {
+          return;
+        }
+
+        const rootContext = this._store.getRootContext();
+        if (rootContext) {
+          const unsubscribe = this._store.subscribe(this._handleRx);
+          this._unsubscirbe.push(unsubscribe);
+
+          for (let ns of this._ns) {
+            const store = rootContext.zoneMapper[ns];
+            const unsubscribe = store.subscribe(this._handleRx);
+            this._unsubscirbe.push(unsubscribe);
+          }
+        } else {
+          const unsubscribe = this._store.subscribe(this._handleRx);
+          this._unsubscirbe.push(unsubscribe);
+        }
       }
 
-      shouldComponentUpdate(nextProps, nextState, nextContext) {
+      shouldComponentUpdate(
+        nextProps: Object,
+        nextState: Object,
+        nextContext: Object
+      ) {
         if (super.shouldComponentUpdate) {
           return super.shouldComponentUpdate(nextProps, nextState, nextContext);
         }
@@ -116,18 +166,46 @@ export function Relax(relaxProps: TRelaxPath): any {
       componentWillUnmount() {
         super.componentWillUnmount && super.componentWillUnmount();
         this._isMounted = false;
-        this._unsubscirbe();
+        for (let unsubcribe of this._unsubscirbe) {
+          unsubcribe();
+        }
       }
 
-      _handleRx = (state: Object) => {
-        if (this._isMounted) {
+      _handleRx = () => {
+        const isMounted = this._isMounted;
+        if (isMounted) {
+          const relaxProps = computeRelaxProps(
+            this._store,
+            this._relaxPropsMapper
+          );
           this.setState({
-            storeState: state
+            ...relaxProps
           });
         }
       };
     };
   };
+}
+
+/**
+ * 获取所有的命名空间
+ */
+function reduceRelaxNamespaceProps(relaxProps: {
+  [name: string]: Array<string | number> | string;
+}) {
+  let namespaces = [] as Array<string>;
+
+  for (let name in relaxProps) {
+    if (relaxProps.hasOwnProperty(name)) {
+      const path = relaxProps[name];
+      const ns = path[0] as string;
+      if (ns.indexOf('@') === 0) {
+        namespaces.push(ns.replace('@', ''));
+      }
+    }
+  }
+
+  return namespaces;
 }
 
 function isRx(relaxProps: Array<any> = []) {

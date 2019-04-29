@@ -1,4 +1,13 @@
-import { getPathVal, isArray, isFn, isObj, isStr, type } from '../util';
+import {
+  getPathVal,
+  isArray,
+  isContextPathVal,
+  isFn,
+  isObj,
+  isStr,
+  parseContextPathVal,
+  type
+} from '../util';
 
 it('test getPathVal ', () => {
   const data = {
@@ -53,4 +62,26 @@ it('test is Fn', () => {
 it('test is object', () => {
   expect(isObj({})).toEqual(true);
   expect(isObj(null)).toEqual(false);
+});
+
+it('test isContextPathVal', () => {
+  expect(isContextPathVal('@goods.user.addr.province')).toEqual(true);
+  expect(isContextPathVal(['@goods', 'user', 'addr', 'province'])).toEqual(
+    true
+  );
+  expect(isContextPathVal(['goods', 'user', 'addr', 'province'])).toEqual(
+    false
+  );
+});
+
+it('test parseContextPathVal ', () => {
+  expect(parseContextPathVal('@goods.user.addr.province')).toEqual({
+    namespace: 'goods',
+    path: ['user', 'addr', 'province']
+  });
+
+  expect(parseContextPathVal(['@goods', 'user', 'addr', 'province'])).toEqual({
+    namespace: 'goods',
+    path: ['user', 'addr', 'province']
+  });
 });
