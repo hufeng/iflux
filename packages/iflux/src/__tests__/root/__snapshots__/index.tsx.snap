@@ -136,14 +136,12 @@ Object {
     "_state": Object {
       "text": "hello root store",
     },
-    "_subscribe": Array [],
     "_transformEl": [Function],
     "bigQuery": [Function],
     "debug": true,
     "dispatch": [Function],
     "dispatchGlobal": [Function],
     "setState": [Function],
-    "subscribe": [Function],
     "zoneMapper": Object {
       "app1": Store {
         "_action": Object {

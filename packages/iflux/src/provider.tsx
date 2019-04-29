@@ -13,32 +13,34 @@ export default class Provider<T> extends React.Component<IProviderProps<T>> {
   };
 
   static contextType = RootContext;
+  // 当前页面的store
   store: Store<T>;
-  _rootStore: RootStore;
+  // RootProvider中的rootStore
+  rootStore: RootStore;
 
-  constructor(props, ctx: RootStore) {
+  constructor(props: IProviderProps<T>, ctx: RootStore) {
     super(props);
 
-    //获取当前的RootContext里面的rootStore
-    this._rootStore = ctx;
-    //初始化store
+    // 获取当前的RootContext里面的rootStore
+    this.rootStore = ctx;
+    // 初始化store
     this.store = this.props.store();
+    // 当前的namespace
+    const ns = this.store.ns;
 
-    //如果当前的rootContext不为空，说明绑定了全局的<Root/>
-    //如果当前设置了namespace则可以将store共享给RootStore
-    //将store的rootContext设置为rootContext
-
-    if (this._rootStore instanceof RootStore && this.store.ns) {
-      const namespace = this.store.ns;
-      this._rootStore.addZone(namespace, this.store);
+    // 如果当前的rootContext不为空，说明绑定了全局的<Root/>
+    // 如果当前设置了namespace则可以将store共享给RootStore
+    // 将store的rootContext设置为rootContext
+    // 双向依赖
+    if (this.rootStore instanceof RootStore && ns) {
+      this.rootStore.addZone(ns, this.store);
       this.store.setRootContext(ctx);
     }
 
     //debug log
     if (process.env.NODE_ENV !== 'production') {
       if (this.store.debug) {
-        const { version } = require('../package.json');
-        console.log(`iflux@${version}`);
+        // 为了在console中调试方便
         const flag = this.props.id || this.store.ns;
         if (flag) {
           (global || window)[flag] = { store: this.store };
@@ -55,8 +57,8 @@ export default class Provider<T> extends React.Component<IProviderProps<T>> {
     this.props.onWillUnmount && this.props.onWillUnmount(this.store);
 
     //如果当前的rootContext不为空，销毁当前的store
-    if (this._rootStore instanceof RootStore && this.store.ns) {
-      this._rootStore.removeZone(this.store.ns);
+    if (this.rootStore instanceof RootStore && this.store.ns) {
+      this.rootStore.removeZone(this.store.ns);
     }
   }
 

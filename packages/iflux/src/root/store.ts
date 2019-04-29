@@ -6,8 +6,7 @@ import {
   IRootStoreProps,
   TActionRetFn,
   TPath,
-  TRootActionHandler,
-  TSubscriber
+  TRootActionHandler
 } from '../types';
 import { getPathVal, isArray, isStr } from '../util';
 
@@ -16,11 +15,15 @@ import { getPathVal, isArray, isStr } from '../util';
  */
 export class RootStore<T = any> {
   public debug: boolean;
+  // 记录各个设置namespace的页面store
   public zoneMapper: { [name: string]: Store };
 
+  //当前的状态
   private _state: T;
+  //当前的el
   private _el: Array<Function>;
-  private _subscribe: Array<TSubscriber>;
+
+  //当前的el和ql计算的缓存
   private _cache: { [key: number]: Array<any> };
   private _action: { [name: string]: TRootActionHandler };
 
@@ -29,7 +32,6 @@ export class RootStore<T = any> {
 
     this._cache = {};
     this.zoneMapper = {};
-    this._subscribe = [];
 
     this.debug = debug || false;
     this._state = state as T;
@@ -139,7 +141,7 @@ export class RootStore<T = any> {
       if (process.env.NODE_ENV !== 'production') {
         if (this.debug) {
           console.warn(
-            `Oops, Could not find any handler. Please check you action`
+            `Oops, Could not find any root action handler. Please check you action`
           );
         }
       }
@@ -167,7 +169,6 @@ export class RootStore<T = any> {
 
     //dispatch root
     const handler = this._action[msg];
-
     if (handler) {
       //debug log
       if (process.env.NODE_ENV !== 'production') {
@@ -179,16 +180,16 @@ export class RootStore<T = any> {
       handler(this, params);
     }
 
-    for (let namespace in this.zoneMapper) {
-      if (this.zoneMapper.hasOwnProperty(namespace)) {
-        const store = this.zoneMapper[namespace];
+    for (let ns in this.zoneMapper) {
+      if (this.zoneMapper.hasOwnProperty(ns)) {
+        const store = this.zoneMapper[ns];
         const handler = store.getAction()[msg];
 
         if (handler) {
           //debug log
           if (process.env.NODE_ENV !== 'production') {
             if (this.debug) {
-              console.log(`${namespace}: handle -> ${msg} `);
+              console.log(`${ns}: handle -> ${msg} `);
             }
           }
 
@@ -209,7 +210,7 @@ export class RootStore<T = any> {
       this._computeEL();
 
       //通知所有的relax告诉大家root的state更新拉
-      //relax会根据注入的属性判断是不是需要更新
+      //relax会根据注入的属性判断是不是需要更新ß
       for (let namespace in this.zoneMapper) {
         if (this.zoneMapper.hasOwnProperty(namespace)) {
           this.zoneMapper[namespace].notifyRelax();
@@ -286,20 +287,6 @@ export class RootStore<T = any> {
     }
   };
 
-  subscribe = (callback: TSubscriber) => {
-    let index = this._subscribe.indexOf(callback);
-    if (index === -1) {
-      this._subscribe.push(callback);
-    }
-
-    return () => {
-      let index = this._subscribe.indexOf(callback);
-      if (index !== -1) {
-        this._subscribe.splice(index, 1);
-      }
-    };
-  };
-
   addZone(namespace: string, store: Store) {
     if (this.zoneMapper[namespace]) {
       return;
@@ -315,9 +302,9 @@ export class RootStore<T = any> {
   pprint() {
     if (process.env.NODE_ENV !== 'production') {
       const state = { root: this.getState() };
-      for (let namespace in this.zoneMapper) {
-        if (this.zoneMapper.hasOwnProperty(namespace)) {
-          state[namespace] = this.zoneMapper[namespace].getState();
+      for (let ns in this.zoneMapper) {
+        if (this.zoneMapper.hasOwnProperty(ns)) {
+          state[ns] = this.zoneMapper[ns].getState();
         }
       }
 
@@ -332,8 +319,6 @@ export class RootStore<T = any> {
   }
 }
 
-//factory method
-//avoid singleton
 export function createRootStore<T>(props: IRootStoreProps<T>) {
   return () => new RootStore<T>(props);
 }

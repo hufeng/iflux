@@ -3,6 +3,8 @@ import { RootStore } from './store';
 
 /**
  * create root context
- * rootContext Automatically collect all provider's store
+ *
+ * rootContext automatically collect all provider's store
+ * when provider's store set namespace
  */
 export const RootContext = React.createContext({} as RootStore);

@@ -6,6 +6,9 @@ const noop = () => {};
 
 /**
  * Root Provider
+ * 顶层的Provider，主要为了解决跨页面数据共享和更新的问题
+ *
+ * <RootProvider store={createRootStore({})}/>
  */
 export default class RootProvider extends React.Component<IRootProviderProps> {
   static defaultProps = {
@@ -15,15 +18,13 @@ export default class RootProvider extends React.Component<IRootProviderProps> {
 
   store: RootStore;
 
-  constructor(props) {
+  constructor(props: IRootProviderProps) {
     super(props);
     this.store = this.props.store();
 
     // debug log
     if (process.env.NODE_ENV !== 'production') {
       if (this.store.debug) {
-        const { version } = require('../../package.json');
-        console.log(`iflux@${version}`);
         console.log('RootProvider enable debug mode');
         (global || window)['Root'] = { store: this.store };
       }
