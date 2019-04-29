@@ -39,27 +39,26 @@ export class Store<T = any> {
   //当前的debug状态
   public debug: boolean;
   //当前store的命名空间
-  public ns: string;
+  //如果设置了namespace，则在<Root/>上下文的情况下
+  //store会自动共享给RootContext的store
+  public ns: string | null;
 
+  //当前的状态
   private _state: T;
+  //当前的effect lang
   private _el: Array<Function>;
+  //当前的root上下文，如果没有<Root/>
+  //则为null
   private _rootContext: RootStore | null;
+  //当前store变化的订阅者
   private _subscribe: Array<TSubscriber>;
+  //bigQuery的cache缓存
   private _cache: { [key: number]: Array<any> };
+  //当前的action
   private _action: { [name: string]: TActionHandler };
 
   constructor(props: IStoreProps<T>) {
-    const { debug, state = {}, el = {}, action = {}, ns } = props;
-
-    //namespace必传
-    if (process.env.NODE_ENV !== 'production') {
-      if (typeof ns === 'undefined') {
-        throw new Error('Please specify namespace in store');
-      }
-    }
-
-    //如果设置了namespace才加入到rootContext
-    //这样可以节约一点memoryq
+    const { debug, state = {}, el = {}, action = {}, ns = null } = props;
 
     this._cache = {};
     this._subscribe = [];
@@ -160,8 +159,19 @@ export class Store<T = any> {
   }
 
   dispatch = (action: string, params?: Object, isGlobal: boolean = false) => {
-    if (isGlobal && this._rootContext != null) {
-      this._rootContext.dispatchGlobal(action, params);
+    //global dispatch
+    if (isGlobal) {
+      if (this._rootContext != null) {
+        this._rootContext.dispatchGlobal(action, params);
+      } else {
+        if (process.env.NODE_ENV != 'production') {
+          console.warn(
+            `Oops, global dispatch action -> ${action} params -> ${JSON.stringify(
+              params
+            )}, Could not find any RootContext`
+          );
+        }
+      }
       return;
     }
 
@@ -205,17 +215,19 @@ export class Store<T = any> {
     const newState = produce(this._state, callback as any);
     if (newState !== this._state) {
       this._state = newState as T;
+
       //update ui
       this.notifyRelax();
+      //更新当前el
       this._computeEL();
     }
   };
 
-  notifyRelax = (ns: string = '') => {
+  notifyRelax = () => {
     //update ui
     batchedUpdates(() => {
       for (let subscribe of this._subscribe) {
-        subscribe(ns || this.ns, this._state);
+        subscribe(this._state);
       }
     });
   };

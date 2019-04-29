@@ -57,14 +57,16 @@ export function useRelax<T = {}>(props: TRelaxPath = [], name: string = '') {
     // 获取当前的root上下文
     const rootContext = store.getRootContext();
     if (rootContext) {
-      const { ns } = store;
-      const allNamespaces = [ns, ...namespaces];
-      const unsubscribeArr = allNamespaces.map(ns => {
+      const unsubscribeStore = store.subscribe(updateRelax(store));
+      // 订阅所有的更新
+      const unsubscribeNamespace = namespaces.map(ns => {
         const _store = rootContext.zoneMapper[ns];
         return _store.subscribe(updateRelax(store));
       });
+
       return () => {
-        for (let unsubscribe of unsubscribeArr) {
+        unsubscribeStore();
+        for (let unsubscribe of unsubscribeNamespace) {
           unsubscribe();
         }
       };
@@ -92,7 +94,7 @@ export function Relax(relaxProps: TRelaxPath): any {
         [name: string]: Array<string | number> | string;
       };
       _isRx: boolean;
-      _unsubscirbe: Function;
+      _unsubscirbe: Array<Function>;
       _ns: Array<string>;
 
       constructor(props: Object, ctx) {
@@ -108,15 +110,32 @@ export function Relax(relaxProps: TRelaxPath): any {
         );
 
         this._isRx = isRx(relaxProps);
-        this._unsubscirbe = noop;
-        if (this._isRx) {
-          this._unsubscirbe = this._store.subscribe(this._handleRx);
-        }
+        this._unsubscirbe = [];
       }
 
       componentDidMount() {
         super.componentDidMount && super.componentDidMount();
         this._isMounted = true;
+
+        //如果当前的relaxProps没有数据，就不去绑定任何的更新事件
+        if (!this._isRx) {
+          return;
+        }
+
+        const rootContext = this._store.getRootContext();
+        if (rootContext) {
+          const unsubscribe = this._store.subscribe(this._handleRx);
+          this._unsubscirbe.push(unsubscribe);
+
+          for (let ns of this._ns) {
+            const store = rootContext.zoneMapper[ns];
+            const unsubscribe = store.subscribe(this._handleRx);
+            this._unsubscirbe.push(unsubscribe);
+          }
+        } else {
+          const unsubscribe = this._store.subscribe(this._handleRx);
+          this._unsubscirbe.push(unsubscribe);
+        }
       }
 
       shouldComponentUpdate(
@@ -147,18 +166,20 @@ export function Relax(relaxProps: TRelaxPath): any {
       componentWillUnmount() {
         super.componentWillUnmount && super.componentWillUnmount();
         this._isMounted = false;
-        this._unsubscirbe();
+        for (let unsubcribe of this._unsubscirbe) {
+          unsubcribe();
+        }
       }
 
-      _handleRx = (ns: string, state: Object) => {
+      _handleRx = () => {
         const isMounted = this._isMounted;
-        //过滤namespace
-        const isBelongToNS =
-          ns === this._store.ns || this._ns.indexOf(ns) !== -1;
-
-        if (isMounted && isBelongToNS) {
+        if (isMounted) {
+          const relaxProps = computeRelaxProps(
+            this._store,
+            this._relaxPropsMapper
+          );
           this.setState({
-            storeState: state
+            ...relaxProps
           });
         }
       };

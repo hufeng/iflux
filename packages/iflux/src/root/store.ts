@@ -212,7 +212,7 @@ export class RootStore<T = any> {
       //relax会根据注入的属性判断是不是需要更新
       for (let namespace in this.zoneMapper) {
         if (this.zoneMapper.hasOwnProperty(namespace)) {
-          this.zoneMapper[namespace].notifyRelax('root');
+          this.zoneMapper[namespace].notifyRelax();
         }
       }
     }

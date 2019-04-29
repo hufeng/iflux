@@ -25,9 +25,9 @@ export type TAction = (msg: string, handler: TActionHandler) => TActionRetFn;
 
 export interface IStoreProps<T = {}> {
   /**
-   * 当前store的命名空间， 必填
+   * 当前store的命名空间, 如果设置，将会把当前store共享给<Root/>
    */
-  ns: string;
+  ns?: string;
 
   /**
    * 当前store的debug状态， 默认false
@@ -72,7 +72,7 @@ export interface IRootStoreProps<T = {}> {
   action?: { [name: string]: TActionRetFn };
 }
 
-export type TSubscriber = (namspace: string, data: Object) => void;
+export type TSubscriber = (data: Object) => void;
 
 export interface IProviderProps<T> {
   children?: any;
