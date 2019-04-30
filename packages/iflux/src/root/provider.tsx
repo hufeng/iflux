@@ -32,10 +32,12 @@ export default class RootProvider extends React.Component<IRootProviderProps> {
   }
 
   componentDidMount() {
+    // 回调生命周期
     this.props.onMounted && this.props.onMounted(this.store);
   }
 
   componentWillUnmount() {
+    // 回调生命周期
     this.props.onWillUnmount && this.props.onWillUnmount(this.store);
   }
 
