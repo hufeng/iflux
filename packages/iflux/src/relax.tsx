@@ -13,11 +13,15 @@ import { isArray, isObj, isStr } from './util';
  */
 
 export function useRelax<T = {}>(props: TRelaxPath = [], name: string = '') {
-  //获取当前的store的上下文
+  // 获取当前的store的上下文
   const store: Store = useContext(StoreContext);
+  // 将当前的relaxProps的数组归集到一个对象中
   const relaxPropsMapper = reduceRelaxPropsMapper(props);
+  // 获取当前的所有的namespace的属性，如: '@app1.user.id'
   const namespaces = reduceRelaxNamespaceProps(relaxPropsMapper);
+  // 计算当前的relaxProps对应的值
   const relaxData = computeRelaxProps<T>(store, relaxPropsMapper);
+  // 初始化useState
   const [relax, updateState] = useState(relaxData);
 
   //get last relax state
@@ -27,6 +31,7 @@ export function useRelax<T = {}>(props: TRelaxPath = [], name: string = '') {
     preRelax.current = relax;
   });
 
+  // 第一次加载relax时候的console提示
   if (process.env.NODE_ENV !== 'production') {
     if (store.debug && name && !preRelax.current) {
       //@ts-ignore
@@ -35,6 +40,7 @@ export function useRelax<T = {}>(props: TRelaxPath = [], name: string = '') {
     }
   }
 
+  //更新state
   const updateRelax = (store: Store) => () => {
     const newState = computeRelaxProps<T>(store, relaxPropsMapper);
     if (!isEqual(newState, preRelax.current)) {
@@ -54,19 +60,20 @@ export function useRelax<T = {}>(props: TRelaxPath = [], name: string = '') {
     if (!isRx(props)) {
       return noop;
     }
+
     // 获取当前的root上下文
     const rootContext = store.getRootContext();
     if (rootContext) {
-      const unsubscribeStore = store.subscribe(updateRelax(store));
+      const unsubscribes = [store.subscribe(updateRelax(store))];
       // 订阅所有的更新
-      const unsubscribeNamespace = namespaces.map(ns => {
+      for (let ns of namespaces) {
         const _store = rootContext.zoneMapper[ns];
-        return _store.subscribe(updateRelax(store));
-      });
+        unsubscribes.push(_store.subscribe(updateRelax(store)));
+      }
 
+      // 取消订阅
       return () => {
-        unsubscribeStore();
-        for (let unsubscribe of unsubscribeNamespace) {
+        for (let unsubscribe of unsubscribes) {
           unsubscribe();
         }
       };

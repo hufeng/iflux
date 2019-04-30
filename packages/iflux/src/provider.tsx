@@ -50,10 +50,12 @@ export default class Provider<T> extends React.Component<IProviderProps<T>> {
   }
 
   componentDidMount() {
+    // 回调生命周期方法
     this.props.onMounted && this.props.onMounted(this.store);
   }
 
   componentWillUnmount() {
+    // 回调生命周期方法
     this.props.onWillUnmount && this.props.onWillUnmount(this.store);
 
     //如果当前的rootContext不为空，销毁当前的store

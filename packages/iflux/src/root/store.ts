@@ -14,6 +14,7 @@ import { getPathVal, isArray, isStr } from '../util';
  *  Root state container
  */
 export class RootStore<T = any> {
+  //是否开启debug状态
   public debug: boolean;
   // 记录各个设置namespace的页面store
   public zoneMapper: { [name: string]: Store };
@@ -25,10 +26,11 @@ export class RootStore<T = any> {
 
   //当前的el和ql计算的缓存
   private _cache: { [key: number]: Array<any> };
+  //当前的dispatch的actionHandler
   private _action: { [name: string]: TRootActionHandler };
 
   constructor(props: IRootStoreProps<T>) {
-    const { debug, state = {}, el = {}, action = {} } = props;
+    const { debug = false, state = {}, el = {}, action = {} } = props;
 
     this._cache = {};
     this.zoneMapper = {};
@@ -210,7 +212,7 @@ export class RootStore<T = any> {
       this._computeEL();
 
       //通知所有的relax告诉大家root的state更新拉
-      //relax会根据注入的属性判断是不是需要更新ß
+      //relax会根据注入的属性判断是不是需要更新
       for (let namespace in this.zoneMapper) {
         if (this.zoneMapper.hasOwnProperty(namespace)) {
           this.zoneMapper[namespace].notifyRelax();
