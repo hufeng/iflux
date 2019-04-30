@@ -1,6 +1,7 @@
 import React from 'react';
 import renderer, { act } from 'react-test-renderer';
 import Provider from '../../../provider';
+import Hello from './component/hello';
 import Text from './component/text';
 import store from './store';
 
@@ -8,6 +9,7 @@ export default function App2() {
   return (
     <Provider store={store}>
       <Text />
+      <Hello />
     </Provider>
   );
 }

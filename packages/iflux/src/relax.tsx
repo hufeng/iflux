@@ -185,6 +185,7 @@ export function Relax(relaxProps: TRelaxPath): any {
             this._store,
             this._relaxPropsMapper
           );
+
           this.setState({
             ...relaxProps
           });
