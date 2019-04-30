@@ -11,7 +11,6 @@ export default class Hello extends React.Component {
 
   render() {
     const { text, text1 } = this.relaxProps;
-    console.log('text1--->', text1);
     return (
       <div>
         <div>{text}</div>
