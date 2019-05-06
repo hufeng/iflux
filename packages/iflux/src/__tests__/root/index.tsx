@@ -7,7 +7,6 @@ import App2 from './app2';
 import App3 from './app3';
 
 const store = createRootStore({
-  debug: true,
   state: {
     text: 'hello root store'
   }
@@ -15,13 +14,26 @@ const store = createRootStore({
 
 function App() {
   return (
-    <RootProvider store={store}>
+    <RootProvider store={store} debug>
       <App1 />
       <App2 />
       <App3 />
     </RootProvider>
   );
 }
+
+it('test default rootstore', () => {
+  const App = () => (
+    <RootProvider debug>
+      <App1 />
+      <App2 />
+      <App3 />
+    </RootProvider>
+  );
+  const tree = renderer.create(<App />);
+  expect(tree).toMatchSnapshot();
+  expect(global['Root']).toMatchSnapshot();
+});
 
 it('test basic root provider', () => {
   const tree = renderer.create(<App />);
