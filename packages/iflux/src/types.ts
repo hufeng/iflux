@@ -30,6 +30,12 @@ export interface IStoreProps<T = {}> {
   ns?: string;
 
   /**
+   * 是不是在Provider组件unmounted的时候删除在root中的共享
+   * 默认为false
+   */
+  destroyAtUnmounted?: boolean;
+
+  /**
    * 当前store的状态，必填
    */
   state?: T;

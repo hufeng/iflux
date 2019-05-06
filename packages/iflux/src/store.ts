@@ -42,6 +42,7 @@ export class Store<T = any> {
   //如果设置了namespace，则在<Root/>上下文的情况下
   //store会自动共享给RootContext的store
   public ns: string | null;
+  public destroyAtUnmounted: boolean;
 
   //当前的状态
   private _state: T;
@@ -58,7 +59,13 @@ export class Store<T = any> {
   private _action: { [name: string]: TActionHandler };
 
   constructor(props: IStoreProps<T>) {
-    const { state = {}, el = {}, action = {}, ns = null } = props;
+    const {
+      state = {},
+      el = {},
+      action = {},
+      ns = null,
+      destroyAtUnmounted = false
+    } = props;
 
     this._cache = {};
     this._subscribe = [];
@@ -66,6 +73,7 @@ export class Store<T = any> {
     this.ns = ns;
     this._rootContext = null;
     this.debug = false;
+    this.destroyAtUnmounted = destroyAtUnmounted || false;
     this._state = state as T;
     this._el = this._transformEl(el);
     this._action = this._reduceAction(action);
