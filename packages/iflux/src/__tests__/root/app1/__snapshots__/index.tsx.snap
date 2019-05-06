@@ -17,6 +17,7 @@ exports[`App1 test init 1`] = `
   >
     inc
   </a>
+  <div />
 </div>
 `;
 
@@ -37,5 +38,6 @@ exports[`test update app1 1`] = `
   >
     inc
   </a>
+  <div />
 </div>
 `;

@@ -3,12 +3,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Hello() {
-  const { text } = useRelax<{ text: string }>(['text']);
+  const { text, like } = useRelax<{ text: string; like: number }>([
+    'text',
+    '@like.like'
+  ]);
 
   return (
     <div>
       {text}
-      <Link to='/like'>Like</Link>
+      <Link to='/like'>Like {like}</Link>
     </div>
   );
 }

@@ -5,7 +5,6 @@ export interface IState {
 }
 
 export default createStore<IState>({
-  debug: true,
   state: {
     count: 1
   }

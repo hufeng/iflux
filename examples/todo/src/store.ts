@@ -14,7 +14,6 @@ export interface IState {
 }
 
 export default createStore<IState>({
-  debug: true,
   action,
   state: {
     filterStatus: '',

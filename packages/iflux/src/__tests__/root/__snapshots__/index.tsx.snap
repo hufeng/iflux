@@ -17,6 +17,7 @@ exports[`App1 test init 1`] = `
   >
     inc
   </a>
+  <div />
 </div>
 `;
 
@@ -96,6 +97,7 @@ Array [
     >
       inc
     </a>
+    <div />
   </div>,
   <div>
     <a
@@ -187,6 +189,7 @@ Object {
         "_transformEl": [Function],
         "bigQuery": [Function],
         "debug": true,
+        "destroyAtUnmounted": false,
         "dispatch": [Function],
         "notifyRelax": [Function],
         "ns": "app1",
@@ -209,10 +212,12 @@ Object {
           [Function],
           [Function],
           [Function],
+          [Function],
         ],
         "_transformEl": [Function],
         "bigQuery": [Function],
         "debug": true,
+        "destroyAtUnmounted": false,
         "dispatch": [Function],
         "notifyRelax": [Function],
         "ns": "app2",
@@ -235,6 +240,7 @@ Object {
         "_transformEl": [Function],
         "bigQuery": [Function],
         "debug": true,
+        "destroyAtUnmounted": false,
         "dispatch": [Function],
         "notifyRelax": [Function],
         "ns": "app3",
@@ -264,6 +270,7 @@ Array [
     >
       inc
     </a>
+    <div />
   </div>,
   <div>
     <a
@@ -353,6 +360,7 @@ Object {
         "_transformEl": [Function],
         "bigQuery": [Function],
         "debug": true,
+        "destroyAtUnmounted": false,
         "dispatch": [Function],
         "notifyRelax": [Function],
         "ns": "app1",
@@ -375,10 +383,12 @@ Object {
           [Function],
           [Function],
           [Function],
+          [Function],
         ],
         "_transformEl": [Function],
         "bigQuery": [Function],
         "debug": true,
+        "destroyAtUnmounted": false,
         "dispatch": [Function],
         "notifyRelax": [Function],
         "ns": "app2",
@@ -401,6 +411,7 @@ Object {
         "_transformEl": [Function],
         "bigQuery": [Function],
         "debug": true,
+        "destroyAtUnmounted": false,
         "dispatch": [Function],
         "notifyRelax": [Function],
         "ns": "app3",
@@ -430,6 +441,9 @@ Array [
     >
       inc
     </a>
+    <div>
+      hello app2
+    </div>
   </div>,
   <div>
     <a
@@ -500,6 +514,7 @@ exports[`test update app1 1`] = `
   >
     inc
   </a>
+  <div />
 </div>
 `;
 
@@ -521,6 +536,9 @@ Array [
     >
       inc
     </a>
+    <div>
+      hello app2 inc
+    </div>
   </div>,
   <div>
     <a

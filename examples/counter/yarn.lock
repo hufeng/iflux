@@ -32,29 +32,14 @@ fast-deep-equal@^2.0.1:
   resolved "http://registry.npm.taobao.org/fast-deep-equal/download/fast-deep-equal-2.0.1.tgz#7b05218ddf9667bf7f370bf7fdb2cb15fdd0aa49"
   integrity sha1-ewUhjd+WZ79/Nwv3/bLLFf3Qqkk=
 
-iant@^0.0.1-alpha14:
-  version "0.0.1-alpha14"
-  resolved "http://registry.npm.taobao.org/iant/download/iant-0.0.1-alpha14.tgz#62c8262d809fffead317e56c72a156a1028be252"
-  integrity sha1-YsgmLYCf/+rTF+VscqFWoQKL4lI=
-  dependencies:
-    fast-deep-equal "^2.0.1"
-    immer "^1.10.4"
-    mitt "^1.1.3"
-    prop-types "^15.7.2"
-
-iflux@^4.0.0:
-  version "4.0.0"
-  resolved "http://registry.npm.taobao.org/iflux/download/iflux-4.0.0.tgz#0d8f05ab6c25afb56b4fc9f178a440a2f0034607"
-  integrity sha1-DY8Fq2wlr7VrT8nxeKRAovADRgc=
+iflux@^4.1.3:
+  version "4.1.3"
+  resolved "https://registry.npm.taobao.org/iflux/download/iflux-4.1.3.tgz#23829692f15d54233252d78f1e18fd3840793a25"
+  integrity sha1-I4KWkvFdVCMyUtePHhj9OEB5OiU=
   dependencies:
     fast-deep-equal "^2.0.1"
     immer "^2.1.5"
     mitt "^1.1.3"
-
-immer@^1.10.4:
-  version "1.12.1"
-  resolved "http://registry.npm.taobao.org/immer/download/immer-1.12.1.tgz#40c6e5b292c00560836c2993bda3a24379d466f5"
-  integrity sha1-QMblspLABWCDbCmTvaOiQ3nUZvU=
 
 immer@^2.1.5:
   version "2.1.5"
@@ -83,7 +68,7 @@ object-assign@^4.1.1:
   resolved "http://registry.npm.taobao.org/object-assign/download/object-assign-4.1.1.tgz?cache=0&other_urls=http%3A%2F%2Fregistry.npm.taobao.org%2Fobject-assign%2Fdownload%2Fobject-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
   integrity sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=
 
-prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.6.2:
   version "15.7.2"
   resolved "http://registry.npm.taobao.org/prop-types/download/prop-types-15.7.2.tgz?cache=0&other_urls=http%3A%2F%2Fregistry.npm.taobao.org%2Fprop-types%2Fdownload%2Fprop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha1-UsQedbjIfnK52TYOAga5ncv/psU=

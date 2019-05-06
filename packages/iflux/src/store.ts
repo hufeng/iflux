@@ -250,7 +250,11 @@ export class Store<T = any> {
           return getPathVal(this._rootContext.getState(), path);
         } else {
           const store = this._rootContext.zoneMapper[namespace] as Store;
-          return getPathVal(store.getState(), path);
+          if (store) {
+            return getPathVal(store.getState(), path);
+          } else {
+            return undefined;
+          }
         }
       } else {
         if (process.env.NODE_ENV !== 'production') {

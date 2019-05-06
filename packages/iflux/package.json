@@ -1,6 +1,6 @@
 {
   "name": "iflux",
-  "version": "4.1.0",
+  "version": "4.1.4",
   "description": "iflux是我们探索将immutable.js和react.js更好的粘合的一种方案",
   "main": "./lib/index.js",
   "types": "./lib/typings/index.d.ts",

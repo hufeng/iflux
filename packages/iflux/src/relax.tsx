@@ -68,7 +68,9 @@ export function useRelax<T = {}>(props: TRelaxPath = [], name: string = '') {
       // 订阅所有的更新
       for (let ns of namespaces) {
         const _store = rootContext.zoneMapper[ns];
-        unsubscribes.push(_store.subscribe(updateRelax(store)));
+        if (_store) {
+          unsubscribes.push(_store.subscribe(updateRelax(store)));
+        }
       }
 
       // 取消订阅
@@ -136,8 +138,10 @@ export function Relax(relaxProps: TRelaxPath): any {
 
           for (let ns of this._ns) {
             const store = rootContext.zoneMapper[ns];
-            const unsubscribe = store.subscribe(this._handleRx);
-            this._unsubscirbe.push(unsubscribe);
+            if (store) {
+              const unsubscribe = store.subscribe(this._handleRx);
+              this._unsubscirbe.push(unsubscribe);
+            }
           }
         } else {
           const unsubscribe = this._store.subscribe(this._handleRx);
@@ -206,9 +210,11 @@ function reduceRelaxNamespaceProps(relaxProps: {
   for (let name in relaxProps) {
     if (relaxProps.hasOwnProperty(name)) {
       const path = relaxProps[name];
-      const ns = path[0] as string;
-      if (ns.indexOf('@') === 0) {
-        namespaces.push(ns.replace('@', ''));
+      if (isArray(path)) {
+        const ns = path[0] as string;
+        if (ns.indexOf('@') === 0) {
+          namespaces.push(ns.replace('@', ''));
+        }
       }
     }
   }
