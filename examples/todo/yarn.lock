@@ -429,10 +429,10 @@ html-comment-regex@^1.1.0:
   resolved "http://registry.npm.taobao.org/html-comment-regex/download/html-comment-regex-1.1.2.tgz#97d4688aeb5c81886a364faa0cad1dda14d433a7"
   integrity sha1-l9RoiutcgYhqNk+qDK0d2hTUM6c=
 
-iflux@^4.0.0:
-  version "4.0.0"
-  resolved "http://registry.npm.taobao.org/iflux/download/iflux-4.0.0.tgz#0d8f05ab6c25afb56b4fc9f178a440a2f0034607"
-  integrity sha1-DY8Fq2wlr7VrT8nxeKRAovADRgc=
+iflux@^4.1.3:
+  version "4.1.3"
+  resolved "https://registry.npm.taobao.org/iflux/download/iflux-4.1.3.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fiflux%2Fdownload%2Fiflux-4.1.3.tgz#23829692f15d54233252d78f1e18fd3840793a25"
+  integrity sha1-I4KWkvFdVCMyUtePHhj9OEB5OiU=
   dependencies:
     fast-deep-equal "^2.0.1"
     immer "^2.1.5"

@@ -210,9 +210,11 @@ function reduceRelaxNamespaceProps(relaxProps: {
   for (let name in relaxProps) {
     if (relaxProps.hasOwnProperty(name)) {
       const path = relaxProps[name];
-      const ns = path[0] as string;
-      if (ns.indexOf('@') === 0) {
-        namespaces.push(ns.replace('@', ''));
+      if (isArray(path)) {
+        const ns = path[0] as string;
+        if (ns.indexOf('@') === 0) {
+          namespaces.push(ns.replace('@', ''));
+        }
       }
     }
   }

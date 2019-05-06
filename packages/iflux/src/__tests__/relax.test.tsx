@@ -1,6 +1,7 @@
 import React from 'react';
 import render, { act } from 'react-test-renderer';
 import { createStore, Provider, Relax, useRelax } from '../index';
+import { QL } from '../ql';
 import { TRelaxProps } from '../types';
 import * as _ from '../util';
 
@@ -8,7 +9,10 @@ type TProps = {
   id: number;
   lname: string;
   name: string;
+  hello: string;
 };
+
+const helloQL = QL(['name', name => `${name}!`]);
 
 const store = createStore({
   ns: 'relax-test',
@@ -19,10 +23,11 @@ const store = createStore({
 });
 
 function TestRelax() {
-  const { id, lname, name, setState, dispatch } = useRelax<TProps>([
+  const { id, lname, name, setState, dispatch, hello } = useRelax<TProps>([
     ['list', 0, 'id'],
     { lname: 'list.0.name' },
-    'name'
+    'name',
+    { hello: helloQL }
   ]);
 
   return (
@@ -30,6 +35,7 @@ function TestRelax() {
       {id}
       {name}
       {lname}
+      {hello}
       {_.isFn(dispatch) && 'yes'}
       {_.isFn(setState) && 'yes'}
     </div>
