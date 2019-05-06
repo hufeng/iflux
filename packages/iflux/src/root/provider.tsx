@@ -1,7 +1,7 @@
 import React from 'react';
 import { IRootProviderProps } from '../types';
 import { RootContext } from './context';
-import { RootStore } from './store';
+import { createRootStore, RootStore } from './store';
 const noop = () => {};
 
 /**
@@ -20,11 +20,19 @@ export default class RootProvider extends React.Component<IRootProviderProps> {
 
   constructor(props: IRootProviderProps) {
     super(props);
-    this.store = this.props.store();
+
+    if (this.props.store) {
+      this.store = this.props.store();
+    } else {
+      this.store = createRootStore({ state: {} })();
+    }
+
+    // set debug
+    this.store.debug = this.props.debug || false;
 
     // debug log
     if (process.env.NODE_ENV !== 'production') {
-      if (this.store.debug) {
+      if (this.props.debug) {
         console.log('RootProvider enable debug mode');
         (global || window)['Root'] = { store: this.store };
       }

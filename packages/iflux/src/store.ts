@@ -58,14 +58,14 @@ export class Store<T = any> {
   private _action: { [name: string]: TActionHandler };
 
   constructor(props: IStoreProps<T>) {
-    const { debug, state = {}, el = {}, action = {}, ns = null } = props;
+    const { state = {}, el = {}, action = {}, ns = null } = props;
 
     this._cache = {};
     this._subscribe = [];
 
     this.ns = ns;
     this._rootContext = null;
-    this.debug = debug || false;
+    this.debug = false;
     this._state = state as T;
     this._el = this._transformEl(el);
     this._action = this._reduceAction(action);

@@ -2,7 +2,7 @@ import React from 'react';
 import { StoreContext } from './context';
 import { RootContext } from './root/context';
 import { RootStore } from './root/store';
-import { Store } from './store';
+import { createStore, Store } from './store';
 import { IProviderProps } from './types';
 const noop = () => {};
 
@@ -23,8 +23,16 @@ export default class Provider<T> extends React.Component<IProviderProps<T>> {
 
     // 获取当前的RootContext里面的rootStore
     this.rootStore = ctx;
+
     // 初始化store
-    this.store = this.props.store();
+    if (this.props.store) {
+      this.store = this.props.store();
+    } else {
+      this.store = createStore<T>({})();
+    }
+
+    this.store.debug = this.props.debug || false;
+
     // 当前的namespace
     const ns = this.store.ns;
 

@@ -30,12 +30,12 @@ export class RootStore<T = any> {
   private _action: { [name: string]: TRootActionHandler };
 
   constructor(props: IRootStoreProps<T>) {
-    const { debug = false, state = {}, el = {}, action = {} } = props;
+    const { state = {}, el = {}, action = {} } = props;
 
     this._cache = {};
     this.zoneMapper = {};
 
-    this.debug = debug || false;
+    this.debug = false;
     this._state = state as T;
     this._el = this._transformEl(el);
     this._action = this._reduceAction(action);

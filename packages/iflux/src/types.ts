@@ -30,11 +30,6 @@ export interface IStoreProps<T = {}> {
   ns?: string;
 
   /**
-   * 当前store的debug状态， 默认false
-   */
-  debug?: boolean;
-
-  /**
    * 当前store的状态，必填
    */
   state?: T;
@@ -51,11 +46,6 @@ export interface IStoreProps<T = {}> {
 }
 
 export interface IRootStoreProps<T = {}> {
-  /**
-   * 当前store的debug状态， 默认false
-   */
-  debug?: boolean;
-
   /**
    * 当前store的状态，必填
    */
@@ -76,7 +66,8 @@ export type TSubscriber = (data: Object) => void;
 
 export interface IProviderProps<T> {
   children?: any;
-  store: () => Store<T>;
+  debug?: boolean;
+  store?: () => Store<T>;
   onMounted?: (store: Store) => void;
   onWillUnmount?: (store: Store) => void;
   /**
@@ -87,7 +78,8 @@ export interface IProviderProps<T> {
 
 export interface IRootProviderProps {
   children?: any;
-  store: () => RootStore<any>;
+  debug?: boolean;
+  store?: () => RootStore<any>;
   onMounted?: (store: RootStore) => void;
   onWillUnmount?: (store: RootStore) => void;
 }

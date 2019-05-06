@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test default store 1`] = `<div />`;
+
+exports[`test default store 2`] = `
+<div>
+  hello world
+</div>
+`;

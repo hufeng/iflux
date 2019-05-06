@@ -12,7 +12,6 @@ type TProps = {
 
 const store = createStore({
   ns: 'relax-test',
-  debug: true,
   state: {
     name: 'test',
     list: [{ id: 1, name: 'test' }]
@@ -61,7 +60,7 @@ class RelaxTest extends React.Component {
 }
 
 const TestApp = () => (
-  <Provider store={store}>
+  <Provider store={store} debug>
     <TestRelax />
     <RelaxTest />
   </Provider>
