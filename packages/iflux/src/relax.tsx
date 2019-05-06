@@ -68,7 +68,9 @@ export function useRelax<T = {}>(props: TRelaxPath = [], name: string = '') {
       // 订阅所有的更新
       for (let ns of namespaces) {
         const _store = rootContext.zoneMapper[ns];
-        unsubscribes.push(_store.subscribe(updateRelax(store)));
+        if (_store) {
+          unsubscribes.push(_store.subscribe(updateRelax(store)));
+        }
       }
 
       // 取消订阅
@@ -136,8 +138,10 @@ export function Relax(relaxProps: TRelaxPath): any {
 
           for (let ns of this._ns) {
             const store = rootContext.zoneMapper[ns];
-            const unsubscribe = store.subscribe(this._handleRx);
-            this._unsubscirbe.push(unsubscribe);
+            if (store) {
+              const unsubscribe = store.subscribe(this._handleRx);
+              this._unsubscirbe.push(unsubscribe);
+            }
           }
         } else {
           const unsubscribe = this._store.subscribe(this._handleRx);

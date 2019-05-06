@@ -2563,10 +2563,10 @@ ieee754@^1.1.4:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.8.tgz#be33d40ac10ef1926701f6f08a2d86fbfd1ad3e4"
 
-iflux@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.npm.taobao.org/iflux/download/iflux-4.1.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fiflux%2Fdownload%2Fiflux-4.1.1.tgz#b23055f264ac70bb9325e11ec7e7ba8847d31c54"
-  integrity sha1-sjBV8mSscLuTJeEex+e6iEfTHFQ=
+iflux@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.npm.taobao.org/iflux/download/iflux-4.1.2.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fiflux%2Fdownload%2Fiflux-4.1.2.tgz#3cf1340a192a78729c10fb75c0876d013a635f4a"
+  integrity sha1-PPE0ChkqeHKcEPt1wIdtATpjX0o=
   dependencies:
     fast-deep-equal "^2.0.1"
     immer "^2.1.5"
