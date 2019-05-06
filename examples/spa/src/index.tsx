@@ -1,12 +1,12 @@
 import createHistory from 'history/createBrowserHistory';
-import { createRootStore, RootProvider } from 'iflux';
+import { RootProvider } from 'iflux';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter as Router } from 'react-router-dom';
 import AsyncRoute from './async-route';
 
 const SPA = () => (
-  <RootProvider store={createRootStore({ debug: true })}>
+  <RootProvider debug>
     <Router history={createHistory()}>
       <div>
         <AsyncRoute exact path='/' load={() => import('./hello')} />

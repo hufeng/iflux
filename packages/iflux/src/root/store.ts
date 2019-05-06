@@ -290,9 +290,6 @@ export class RootStore<T = any> {
   };
 
   addZone(namespace: string, store: Store) {
-    if (this.zoneMapper[namespace]) {
-      return;
-    }
     this.zoneMapper[namespace] = store;
   }
 
