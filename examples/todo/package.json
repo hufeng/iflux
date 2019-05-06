@@ -14,7 +14,7 @@
     "@types/react-dom": "^16.8.0",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
-    "iflux": "^4.1.3"
+    "iflux": "^4.1.4"
   },
   "devDependencies": {
     "cssnano": "^4.1.10"
