@@ -6,6 +6,17 @@ import { createStore, Store } from './store';
 import { IProviderProps } from './types';
 const noop = () => {};
 
+/**
+ * 连接页面和页面store的上下文
+ *
+ * Usage:
+ * function App() {
+ *   return (
+ *     <Provider store={createStore({state: {}})}>
+ *     </Provider>
+ * );
+ * }
+ */
 export default class Provider<T> extends React.Component<IProviderProps<T>> {
   static defaultProps = {
     onMounted: noop,
@@ -24,13 +35,15 @@ export default class Provider<T> extends React.Component<IProviderProps<T>> {
     // 获取当前的RootContext里面的rootStore
     this.rootStore = ctx;
 
-    // 初始化store
+    // 如果prop中没有store, 就给一个默认的
+    // 简化api
     if (this.props.store) {
       this.store = this.props.store();
     } else {
       this.store = createStore<T>({})();
     }
 
+    // set debug
     this.store.debug = this.props.debug || false;
 
     // 当前的namespace
@@ -49,9 +62,9 @@ export default class Provider<T> extends React.Component<IProviderProps<T>> {
     if (process.env.NODE_ENV !== 'production') {
       if (this.store.debug) {
         // 为了在console中调试方便
-        const flag = this.props.id || this.store.ns;
-        if (flag) {
-          (global || window)[flag] = { store: this.store };
+        const id = this.props.id;
+        if (id) {
+          (global || window)[id] = { store: this.store };
         }
       }
     }
@@ -66,7 +79,10 @@ export default class Provider<T> extends React.Component<IProviderProps<T>> {
     // 回调生命周期方法
     this.props.onWillUnmount && this.props.onWillUnmount(this.store);
 
-    //如果当前的rootContext不为空，销毁当前的store
+    // 如果当前的rootContext不为空，
+    // 设置了命名空间
+    // 开启了在unmounted的时候销毁，
+    // 采取销毁数据
     if (
       this.rootStore instanceof RootStore &&
       this.store.ns &&

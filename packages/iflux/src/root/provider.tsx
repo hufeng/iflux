@@ -7,8 +7,14 @@ const noop = () => {};
 /**
  * Root Provider
  * 顶层的Provider，主要为了解决跨页面数据共享和更新的问题
+ * 随着Provider的加载，渐进式的将Page中的store归集到RootStore中
  *
- * <RootProvider store={createRootStore({})}/>
+ * Usage:
+ * // 缺省store
+ * <RootProvider />
+ *
+ * // 设置rootStore
+ * <RootProvider store={createRootStore({state: {}})}/>
  */
 export default class RootProvider extends React.Component<IRootProviderProps> {
   static defaultProps = {
@@ -21,6 +27,7 @@ export default class RootProvider extends React.Component<IRootProviderProps> {
   constructor(props: IRootProviderProps) {
     super(props);
 
+    // 如果对当前props没有store，就创建一个默认的
     if (this.props.store) {
       this.store = this.props.store();
     } else {
@@ -34,7 +41,8 @@ export default class RootProvider extends React.Component<IRootProviderProps> {
     if (process.env.NODE_ENV !== 'production') {
       if (this.props.debug) {
         console.log('RootProvider enable debug mode');
-        (global || window)['Root'] = { store: this.store };
+        // 方便在console中定位问题
+        (global || window)['RootStore'] = this.store;
       }
     }
   }
