@@ -3,22 +3,10 @@
 exports[`App2 basic 1`] = `
 Array [
   <div>
-    <a
-      href="javascript:void(0);"
-      onClick={[Function]}
-    >
-      dec
-    </a>
     <div>
       hello app2
     </div>
     <div />
-    <a
-      href="javascript:void(0);"
-      onClick={[Function]}
-    >
-      inc
-    </a>
   </div>,
   <div>
     <div>
@@ -32,22 +20,10 @@ Array [
 exports[`app2 test update 1`] = `
 Array [
   <div>
-    <a
-      href="javascript:void(0);"
-      onClick={[Function]}
-    >
-      dec
-    </a>
     <div>
       hello app2 inc
     </div>
     <div />
-    <a
-      href="javascript:void(0);"
-      onClick={[Function]}
-    >
-      inc
-    </a>
   </div>,
   <div>
     <div>

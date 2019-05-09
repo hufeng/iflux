@@ -1,21 +1,23 @@
-> New Idea, New the World. 🔥🔥🔥
+> I think, I am 🔥🔥🔥
 
 <pre>
-技术也是时尚驱动的，我们常常臣服于时尚,面对快速的变化常常让我们局促不安
+技术也是时尚驱动的，我们常常臣服于时尚,
+面对快速的变化常常让我们局促不安
 开始焦虑，唯恐错过了些什么,怎么打破这种焦虑？
 需要在快速变化得世界里保持清醒，保持独立的思考和认知
 让我们回归到技术的本质, 因为解决了真实的问题，技术才变得有价值
-<strong>真正牛\*的技术，都是静悄悄的跑在线上...</strong>
+<strong>真正牛*的技术，都是静悄悄的跑在线上...</strong>
 </pre>
 
 ### what is iflux ?
 
 _iflux = immer.js + react.js_
 
-light-weight, Reactive and Predictable state container for React or ReactNative.
+a simple state container for React ecosystem.
 
 ### Features
 
+- Progressive
 - Light-weight
 - Reactive
 - Predict
@@ -24,9 +26,9 @@ light-weight, Reactive and Predictable state container for React or ReactNative.
 
 [![NPM](https://nodei.co/npm/iflux.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/iflux/)
 
-### Why React ?
+### Why React?
 
-[React.js](http://facebook.github.io/react/)犹如 Facebook 的文化基因所强调的一样 move fast and break things, 在快速前进中打破了很多我们对于 web 开发的固有认识。
+[React.js](http://facebook.github.io/react/)犹如 Facebook 的文化基因所强调的一样 break things and move fast, 在快速前进中打破了很多我们对于 web 开发的固有认识。
 更厉害的是 React 把这种创新平移到移动开发(React native)实现了 Learn once, Write everywhere.
 
 ### React features
@@ -37,7 +39,7 @@ light-weight, Reactive and Predictable state container for React or ReactNative.
 
 3. 单向的数据流动（简单可预测）
 
-4. 超高性能的渲染 60fps 不是梦 （掌声在哪里？）
+4. 超高性能的渲染（掌声在哪里？）
 
 5. 最大的创新源于 virtual dom （UI VM）
 
@@ -45,7 +47,7 @@ light-weight, Reactive and Predictable state container for React or ReactNative.
 
 7. 精确的生命周期，更简单的整合第三方的库(jquery)
 
-### 我们期待走的更远 - dare for more
+### why iflux
 
 因为 React 的定位就是轻量级高效组件式的 view library，但是在我们实际的应用开发工程中不仅仅需要处理 view 的问题，更复杂的是对于状态的控制。
 
@@ -58,32 +60,87 @@ light-weight, Reactive and Predictable state container for React or ReactNative.
 随着对 immutable.js 深入挖掘，发现正好契合了 React 的架构特点，可以使用 Immutable 很好的管理我们的 Store，因为 Immutable 强调值语义，
 能够更好的追踪状态的变化(cursor)且带来了更好的性能。
 
-**changelog**
-
-使用 immer.js 来管理数据的不可变，更好的结合 typescript 的类型体系
+随着 js 代码量越来越大,我们需要更 safety, scalable 的方式来开发前端，所以我们采用 typescript，但是 immutable 和 ts 配合的还不够好，随着技术的变化，immer.js 这样的小而美的库很好的解决了 js 的值不可变问题，又能很好和 typescript 配合起来
 
 ### 保持简单 -- KISS
 
 ![iflux-flow](https://raw.githubusercontent.com/hufeng/iflux/4.0/screencast/iflux-flow.png)
 
-一个应用只有一个 Store，单根数据源，单向数据流动，数据沉淀在顶层。
-且通过 PureRenderMix 可以获取更好的性能。简直就是为 React 私人定制一般。
+### Getting started
 
-于是，顺其自然的写了 iflux 去更好的粘合 React 和 immutable。
+```shell
+npm install iflux --save
+```
 
-整体思路：
+react-native environment
 
-1. React 只承担 view 应该承担的事情（1. 资料呈现 2. 用户交互） 不处理任何的业务逻辑，就是根据数据去渲染 dom 即可，这样 view 可以做的很轻。
+```shell
+npm install iflux --save
+npm install babel-plugin-iflux --save-dev
+```
 
-2. 应用的全部数据沉淀在一个 Store 中，当全部数据在顶层时，很多事情都变得简单，因为获取数据变得十分廉价。无论是校验和对数据的转换控制都变得非常简单。
+//.babelrc
 
-3. React 只是取数据渲染，其他的比如状态的变化全部通过事件 pubsub 通知 appstore 去更新数据。如果状态不会影响其他组件的级联变化可以放在组件内部消化掉。
+```javascript
+{
+  "plugins":[["iflux","reactnative": true]]
+}
+```
 
-4. 区分 View component 和 pure component。
+### simple example
 
-## TODO
+```javascript
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { createStore, useRelax, Provider } from 'iflux';
 
-contribute .....
+// create state container
+const store = createStore({
+  state: {
+    text: '你一抹微笑如茉莉^_^',
+    count: 1
+  }
+});
+
+// relax container
+function Greeting() {
+  const [text, count, setState] = useRelax(['text', 'count']);
+
+  // mutation
+  const inc = () =>
+    setState(state => {
+      state.count++;
+    });
+
+  return (
+    <div>
+      <span>{text}</span>
+      <a href='javascript:void(0);' onClick={inc}>
+        +{count}
+      </a>
+    </div>
+  );
+}
+
+// create Page
+function App() {
+  return (
+    <Provider>
+      <Greeting />
+    </Provider>
+  );
+}
+
+ReactDOM.render(<App />, document.getElementById('app'));
+```
+
+### 更多 demo 在线体验
+
+[SmileDemo](https://codesandbox.io/embed/8ljj0kvw6j)
+
+[Counter](https://codesandbox.io/embed/zl3jqo1lm)
+
+[todo](https://codesandbox.io/embed/ny43wyw9j)
 
 ## Domain Object
 

@@ -2,44 +2,19 @@
 
 exports[`App1 test init 1`] = `
 <div>
-  <a
-    href="javascript:void(0);"
-    onClick={[Function]}
-  >
-    dec
-  </a>
   <div>
     hello app1
   </div>
-  <a
-    href="javascript:void(0);"
-    onClick={[Function]}
-  >
-    inc
-  </a>
-  <div />
 </div>
 `;
 
 exports[`App2 basic 1`] = `
 Array [
   <div>
-    <a
-      href="javascript:void(0);"
-      onClick={[Function]}
-    >
-      dec
-    </a>
     <div>
       hello app2
     </div>
     <div />
-    <a
-      href="javascript:void(0);"
-      onClick={[Function]}
-    >
-      inc
-    </a>
   </div>,
   <div>
     <div>
@@ -53,22 +28,10 @@ Array [
 exports[`app2 test update 1`] = `
 Array [
   <div>
-    <a
-      href="javascript:void(0);"
-      onClick={[Function]}
-    >
-      dec
-    </a>
     <div>
       hello app2 inc
     </div>
     <div />
-    <a
-      href="javascript:void(0);"
-      onClick={[Function]}
-    >
-      inc
-    </a>
   </div>,
   <div>
     <div>
@@ -82,42 +45,17 @@ Array [
 exports[`test basic root provider 1`] = `
 Array [
   <div>
-    <a
-      href="javascript:void(0);"
-      onClick={[Function]}
-    >
-      dec
-    </a>
     <div>
       hello app1
     </div>
-    <a
-      href="javascript:void(0);"
-      onClick={[Function]}
-    >
-      inc
-    </a>
-    <div />
   </div>,
   <div>
-    <a
-      href="javascript:void(0);"
-      onClick={[Function]}
-    >
-      dec
-    </a>
     <div>
       hello app2
     </div>
     <div>
       hello app1
     </div>
-    <a
-      href="javascript:void(0);"
-      onClick={[Function]}
-    >
-      inc
-    </a>
   </div>,
   <div>
     <div>
@@ -152,101 +90,96 @@ Array [
 `;
 
 exports[`test basic root provider 2`] = `
-Object {
-  "store": RootStore {
-    "_action": Object {},
-    "_cache": Object {},
-    "_computeEL": [Function],
-    "_el": Array [],
-    "_parseEL": [Function],
-    "_state": Object {
-      "text": "hello root store",
+RootStore {
+  "_action": Object {},
+  "_cache": Object {},
+  "_computeEL": [Function],
+  "_el": Array [],
+  "_parseEL": [Function],
+  "_state": Object {},
+  "_transformEl": [Function],
+  "bigQuery": [Function],
+  "debug": true,
+  "dispatch": [Function],
+  "dispatchGlobal": [Function],
+  "setState": [Function],
+  "zoneMapper": Object {
+    "app1": Store {
+      "_action": Object {
+        "inc": [Function],
+      },
+      "_cache": Object {},
+      "_computeEL": [Function],
+      "_el": Array [],
+      "_parseEL": [Function],
+      "_rootContext": [Circular],
+      "_state": Object {
+        "text": "hello app1",
+      },
+      "_subscribe": Array [
+        [Function],
+        [Function],
+        [Function],
+      ],
+      "_transformEl": [Function],
+      "bigQuery": [Function],
+      "debug": false,
+      "destroyAtUnmounted": false,
+      "dispatch": [Function],
+      "notifyRelax": [Function],
+      "ns": "app1",
+      "setState": [Function],
+      "subscribe": [Function],
     },
-    "_transformEl": [Function],
-    "bigQuery": [Function],
-    "debug": true,
-    "dispatch": [Function],
-    "dispatchGlobal": [Function],
-    "setState": [Function],
-    "zoneMapper": Object {
-      "app1": Store {
-        "_action": Object {
-          "inc": [Function],
-        },
-        "_cache": Object {},
-        "_computeEL": [Function],
-        "_el": Array [],
-        "_parseEL": [Function],
-        "_rootContext": [Circular],
-        "_state": Object {
-          "text": "hello app1",
-        },
-        "_subscribe": Array [
-          [Function],
-          [Function],
-          [Function],
-        ],
-        "_transformEl": [Function],
-        "bigQuery": [Function],
-        "debug": true,
-        "destroyAtUnmounted": false,
-        "dispatch": [Function],
-        "notifyRelax": [Function],
-        "ns": "app1",
-        "setState": [Function],
-        "subscribe": [Function],
+    "app2": Store {
+      "_action": Object {
+        "inc": [Function],
       },
-      "app2": Store {
-        "_action": Object {
-          "inc": [Function],
-        },
-        "_cache": Object {},
-        "_computeEL": [Function],
-        "_el": Array [],
-        "_parseEL": [Function],
-        "_rootContext": [Circular],
-        "_state": Object {
-          "text": "hello app2",
-        },
-        "_subscribe": Array [
-          [Function],
-          [Function],
-          [Function],
-          [Function],
-        ],
-        "_transformEl": [Function],
-        "bigQuery": [Function],
-        "debug": true,
-        "destroyAtUnmounted": false,
-        "dispatch": [Function],
-        "notifyRelax": [Function],
-        "ns": "app2",
-        "setState": [Function],
-        "subscribe": [Function],
+      "_cache": Object {},
+      "_computeEL": [Function],
+      "_el": Array [],
+      "_parseEL": [Function],
+      "_rootContext": [Circular],
+      "_state": Object {
+        "text": "hello app2",
       },
-      "app3": Store {
-        "_action": Object {},
-        "_cache": Object {},
-        "_computeEL": [Function],
-        "_el": Array [],
-        "_parseEL": [Function],
-        "_rootContext": [Circular],
-        "_state": Object {
-          "text": "hello app3",
-        },
-        "_subscribe": Array [
-          [Function],
-        ],
-        "_transformEl": [Function],
-        "bigQuery": [Function],
-        "debug": true,
-        "destroyAtUnmounted": false,
-        "dispatch": [Function],
-        "notifyRelax": [Function],
-        "ns": "app3",
-        "setState": [Function],
-        "subscribe": [Function],
+      "_subscribe": Array [
+        [Function],
+        [Function],
+        [Function],
+      ],
+      "_transformEl": [Function],
+      "bigQuery": [Function],
+      "debug": true,
+      "destroyAtUnmounted": false,
+      "dispatch": [Function],
+      "notifyRelax": [Function],
+      "ns": "app2",
+      "setState": [Function],
+      "subscribe": [Function],
+    },
+    "app3": Store {
+      "_action": Object {},
+      "_cache": Object {},
+      "_computeEL": [Function],
+      "_el": Array [],
+      "_parseEL": [Function],
+      "_rootContext": [Circular],
+      "_state": Object {
+        "text": "hello app3",
       },
+      "_subscribe": Array [
+        [Function],
+      ],
+      "_transformEl": [Function],
+      "bigQuery": [Function],
+      "debug": true,
+      "destroyAtUnmounted": false,
+      "dispatch": [Function],
+      "notifyRelax": [Function],
+      "ns": "app3",
+      "setState": [Function],
+      "subscribe": [Function],
     },
   },
 }
@@ -255,42 +188,17 @@ Object {
 exports[`test default rootstore 1`] = `
 Array [
   <div>
-    <a
-      href="javascript:void(0);"
-      onClick={[Function]}
-    >
-      dec
-    </a>
     <div>
       hello app1
     </div>
-    <a
-      href="javascript:void(0);"
-      onClick={[Function]}
-    >
-      inc
-    </a>
-    <div />
   </div>,
   <div>
-    <a
-      href="javascript:void(0);"
-      onClick={[Function]}
-    >
-      dec
-    </a>
     <div>
       hello app2
     </div>
     <div>
       hello app1
     </div>
-    <a
-      href="javascript:void(0);"
-      onClick={[Function]}
-    >
-      inc
-    </a>
   </div>,
   <div>
     <div>
@@ -325,99 +233,96 @@ Array [
 `;
 
 exports[`test default rootstore 2`] = `
-Object {
-  "store": RootStore {
-    "_action": Object {},
-    "_cache": Object {},
-    "_computeEL": [Function],
-    "_el": Array [],
-    "_parseEL": [Function],
-    "_state": Object {},
-    "_transformEl": [Function],
-    "bigQuery": [Function],
-    "debug": true,
-    "dispatch": [Function],
-    "dispatchGlobal": [Function],
-    "setState": [Function],
-    "zoneMapper": Object {
-      "app1": Store {
-        "_action": Object {
-          "inc": [Function],
-        },
-        "_cache": Object {},
-        "_computeEL": [Function],
-        "_el": Array [],
-        "_parseEL": [Function],
-        "_rootContext": [Circular],
-        "_state": Object {
-          "text": "hello app1",
-        },
-        "_subscribe": Array [
-          [Function],
-          [Function],
-          [Function],
-        ],
-        "_transformEl": [Function],
-        "bigQuery": [Function],
-        "debug": true,
-        "destroyAtUnmounted": false,
-        "dispatch": [Function],
-        "notifyRelax": [Function],
-        "ns": "app1",
-        "setState": [Function],
-        "subscribe": [Function],
+RootStore {
+  "_action": Object {},
+  "_cache": Object {},
+  "_computeEL": [Function],
+  "_el": Array [],
+  "_parseEL": [Function],
+  "_state": Object {},
+  "_transformEl": [Function],
+  "bigQuery": [Function],
+  "debug": true,
+  "dispatch": [Function],
+  "dispatchGlobal": [Function],
+  "setState": [Function],
+  "zoneMapper": Object {
+    "app1": Store {
+      "_action": Object {
+        "inc": [Function],
       },
-      "app2": Store {
-        "_action": Object {
-          "inc": [Function],
-        },
-        "_cache": Object {},
-        "_computeEL": [Function],
-        "_el": Array [],
-        "_parseEL": [Function],
-        "_rootContext": [Circular],
-        "_state": Object {
-          "text": "hello app2",
-        },
-        "_subscribe": Array [
-          [Function],
-          [Function],
-          [Function],
-          [Function],
-        ],
-        "_transformEl": [Function],
-        "bigQuery": [Function],
-        "debug": true,
-        "destroyAtUnmounted": false,
-        "dispatch": [Function],
-        "notifyRelax": [Function],
-        "ns": "app2",
-        "setState": [Function],
-        "subscribe": [Function],
+      "_cache": Object {},
+      "_computeEL": [Function],
+      "_el": Array [],
+      "_parseEL": [Function],
+      "_rootContext": [Circular],
+      "_state": Object {
+        "text": "hello app1",
       },
-      "app3": Store {
-        "_action": Object {},
-        "_cache": Object {},
-        "_computeEL": [Function],
-        "_el": Array [],
-        "_parseEL": [Function],
-        "_rootContext": [Circular],
-        "_state": Object {
-          "text": "hello app3",
-        },
-        "_subscribe": Array [
-          [Function],
-        ],
-        "_transformEl": [Function],
-        "bigQuery": [Function],
-        "debug": true,
-        "destroyAtUnmounted": false,
-        "dispatch": [Function],
-        "notifyRelax": [Function],
-        "ns": "app3",
-        "setState": [Function],
-        "subscribe": [Function],
+      "_subscribe": Array [
+        [Function],
+        [Function],
+        [Function],
+      ],
+      "_transformEl": [Function],
+      "bigQuery": [Function],
+      "debug": false,
+      "destroyAtUnmounted": false,
+      "dispatch": [Function],
+      "notifyRelax": [Function],
+      "ns": "app1",
+      "setState": [Function],
+      "subscribe": [Function],
+    },
+    "app2": Store {
+      "_action": Object {
+        "inc": [Function],
       },
+      "_cache": Object {},
+      "_computeEL": [Function],
+      "_el": Array [],
+      "_parseEL": [Function],
+      "_rootContext": [Circular],
+      "_state": Object {
+        "text": "hello app2",
+      },
+      "_subscribe": Array [
+        [Function],
+        [Function],
+        [Function],
+      ],
+      "_transformEl": [Function],
+      "bigQuery": [Function],
+      "debug": true,
+      "destroyAtUnmounted": false,
+      "dispatch": [Function],
+      "notifyRelax": [Function],
+      "ns": "app2",
+      "setState": [Function],
+      "subscribe": [Function],
+    },
+    "app3": Store {
+      "_action": Object {},
+      "_cache": Object {},
+      "_computeEL": [Function],
+      "_el": Array [],
+      "_parseEL": [Function],
+      "_rootContext": [Circular],
+      "_state": Object {
+        "text": "hello app3",
+      },
+      "_subscribe": Array [
+        [Function],
+      ],
+      "_transformEl": [Function],
+      "bigQuery": [Function],
+      "debug": true,
+      "destroyAtUnmounted": false,
+      "dispatch": [Function],
+      "notifyRelax": [Function],
+      "ns": "app3",
+      "setState": [Function],
+      "subscribe": [Function],
     },
   },
 }
@@ -426,44 +331,17 @@ Object {
 exports[`test update app 1`] = `
 Array [
   <div>
-    <a
-      href="javascript:void(0);"
-      onClick={[Function]}
-    >
-      dec
-    </a>
     <div>
       hello app1 inc
-    </div>
-    <a
-      href="javascript:void(0);"
-      onClick={[Function]}
-    >
-      inc
-    </a>
-    <div>
-      hello app2
     </div>
   </div>,
   <div>
-    <a
-      href="javascript:void(0);"
-      onClick={[Function]}
-    >
-      dec
-    </a>
     <div>
       hello app2
     </div>
     <div>
       hello app1 inc
     </div>
-    <a
-      href="javascript:void(0);"
-      onClick={[Function]}
-    >
-      inc
-    </a>
   </div>,
   <div>
     <div>
@@ -499,66 +377,26 @@ Array [
 
 exports[`test update app1 1`] = `
 <div>
-  <a
-    href="javascript:void(0);"
-    onClick={[Function]}
-  >
-    dec
-  </a>
   <div>
     hello app1 inc
   </div>
-  <a
-    href="javascript:void(0);"
-    onClick={[Function]}
-  >
-    inc
-  </a>
-  <div />
 </div>
 `;
 
 exports[`test update global 1`] = `
 Array [
   <div>
-    <a
-      href="javascript:void(0);"
-      onClick={[Function]}
-    >
-      dec
-    </a>
     <div>
       hello app1 inc
-    </div>
-    <a
-      href="javascript:void(0);"
-      onClick={[Function]}
-    >
-      inc
-    </a>
-    <div>
-      hello app2 inc
     </div>
   </div>,
   <div>
-    <a
-      href="javascript:void(0);"
-      onClick={[Function]}
-    >
-      dec
-    </a>
     <div>
       hello app2 inc
     </div>
     <div>
       hello app1 inc
     </div>
-    <a
-      href="javascript:void(0);"
-      onClick={[Function]}
-    >
-      inc
-    </a>
   </div>,
   <div>
     <div>
