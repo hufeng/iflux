@@ -8,12 +8,13 @@ export default function BlogDetail(props: any) {
   const id = props.match.params.id;
 
   const onInit = (store: Store<IBlog>) => {
+    const blog = store.bigQuery(`@Blog.list.${id}`);
+
     store.setState(state => {
-      state.id = 1;
-      state.title = 'hello world';
-      state.content = 'hello';
+      state.id = blog.id;
+      state.title = blog.title;
+      state.content = blog.content;
     });
-    console.log(store.getState());
   };
 
   return (
