@@ -125,7 +125,7 @@ function Greeting() {
 // create Page
 function App() {
   return (
-    <Provider>
+    <Provider store={store}>
       <Greeting />
     </Provider>
   );
