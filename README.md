@@ -89,7 +89,50 @@ npm install babel-plugin-iflux --save-dev
 
 ### simple example
 
-<iframe src="https://codesandbox.io/embed/zl3jqo1lm?fontsize=14" title="iflux-counter" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
+```javascript
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { createStore, useRelax, Provider } from 'iflux';
+
+// create state container
+const store = createStore({
+  state: {
+    text: '你一抹微笑如茉莉^_^',
+    count: 1
+  }
+});
+
+// relax container
+function Greeting() {
+  const [text, count, setState] = useRelax(['text', 'count']);
+
+  // mutation
+  const inc = () =>
+    setState(state => {
+      state.count++;
+    });
+
+  return (
+    <div>
+      <span>{text}</span>
+      <a href='javascript:void(0);' onClick={inc}>
+        +{count}
+      </a>
+    </div>
+  );
+}
+
+// create Page
+function App() {
+  return (
+    <Provider>
+      <Greeting />
+    </Provider>
+  );
+}
+
+ReactDOM.render(<App />, document.getElementById('app'));
+```
 
 ### 更多 demo 在线体验
 
