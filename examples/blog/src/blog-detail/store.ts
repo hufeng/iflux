@@ -1,9 +1,9 @@
 import { createStore } from 'iflux';
 
 export default createStore({
-  ns: 'hello',
+  ns: 'BlogDetail',
   state: {
-    text: '你一抹😊如茉莉!',
-    count: 100
+    title: '',
+    content: ''
   }
 });

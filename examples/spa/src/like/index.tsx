@@ -4,8 +4,12 @@ import Like from './component/like';
 import store from './store';
 
 export default function LikeApp() {
+  const onInit = store => {
+    const count = store.bigQuery;
+  };
+
   return (
-    <Provider store={store} id='LikeApp'>
+    <Provider store={store} onMounted={}>
       <Like />
     </Provider>
   );

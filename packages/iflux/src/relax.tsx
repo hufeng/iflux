@@ -8,7 +8,6 @@ import { isArray, isObj, isStr } from './util';
 /**
  * 获取数据从当前的store获取，因为当前的store会获取rootContext
  * 然后获取各个namespace下的参数
- *
  * 更新时候单独监听每个other store，做增量更新
  */
 
@@ -21,24 +20,13 @@ export function useRelax<T = {}>(props: TRelaxPath = [], name: string = '') {
   const namespaces = reduceRelaxNamespaceProps(relaxPropsMapper);
   // 计算当前的relaxProps对应的值
   const relaxData = computeRelaxProps<T>(store, relaxPropsMapper);
+  // 所有的取消订阅函数
+  const unsubscribes = [] as Array<Function>;
   // 初始化useState
   const [relax, updateState] = useState(relaxData);
 
   //get last relax state
   const preRelax = useRef(null);
-  useEffect(() => {
-    //@ts-ignore
-    preRelax.current = relax;
-  });
-
-  // 第一次加载relax时候的console提示
-  if (process.env.NODE_ENV !== 'production') {
-    if (store.debug && name && !preRelax.current) {
-      //@ts-ignore
-      const { setState, dispatch, ...rest } = relax;
-      console.log(`Relax(${name}):`, rest);
-    }
-  }
 
   //更新state
   const updateRelax = (store: Store) => () => {
@@ -55,33 +43,54 @@ export function useRelax<T = {}>(props: TRelaxPath = [], name: string = '') {
     }
   };
 
+  // 在provider为class component的背景下 (不想为了hook搞两个provider)
+  // provider的didMount会提前useRelax的hook中的didMount提前触发，导致
+  // 在provider的didMount中触发store的state的改变导致useRelax收不到更新
+  // 相当于componentWillMount
+
+  if (!preRelax.current) {
+    //如果relax不需要获取任何数据 就不去监听任何的store的变化
+    if (isRx(props)) {
+      // 获取当前的root上下文
+      const rootContext = store.getRootContext();
+      if (rootContext) {
+        // 订阅当前页面的store的变化
+        unsubscribes.push(store.subscribe(updateRelax(store)));
+        // 订阅其他页面store的更新
+        for (let ns of namespaces) {
+          const _store = rootContext.zoneMapper[ns];
+          if (_store) {
+            unsubscribes.push(_store.subscribe(updateRelax(store)));
+          }
+        }
+      } else {
+        unsubscribes.push(store.subscribe(updateRelax(store)));
+      }
+    }
+  }
+
+  useEffect(() => {
+    //@ts-ignore
+    preRelax.current = relax;
+  });
+
+  // 第一次加载relax时候的console提示
+  if (process.env.NODE_ENV !== 'production') {
+    if (store.debug && name && !preRelax.current) {
+      //@ts-ignore
+      const { setState, dispatch, ...rest } = relax;
+      console.log(`Relax(${name}):`, rest);
+    }
+  }
+
   //only componentDidMount && componentWillUnmount
   useEffect(() => {
-    if (!isRx(props)) {
-      return noop;
-    }
-
-    // 获取当前的root上下文
-    const rootContext = store.getRootContext();
-    if (rootContext) {
-      const unsubscribes = [store.subscribe(updateRelax(store))];
-      // 订阅所有的更新
-      for (let ns of namespaces) {
-        const _store = rootContext.zoneMapper[ns];
-        if (_store) {
-          unsubscribes.push(_store.subscribe(updateRelax(store)));
-        }
+    // 取消订阅
+    return () => {
+      for (let unsubscribe of unsubscribes) {
+        unsubscribe();
       }
-
-      // 取消订阅
-      return () => {
-        for (let unsubscribe of unsubscribes) {
-          unsubscribe();
-        }
-      };
-    } else {
-      return store.subscribe(updateRelax(store));
-    }
+    };
   }, []);
 
   return relax;
@@ -296,5 +305,3 @@ function computeRelaxProps<T>(
     setState: typeof store.setState;
   };
 }
-
-function noop() {}

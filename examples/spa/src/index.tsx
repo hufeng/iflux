@@ -2,15 +2,16 @@ import createHistory from 'history/createBrowserHistory';
 import { RootProvider } from 'iflux';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter as Router } from 'react-router-dom';
-import AsyncRoute from './async-route';
+import { HashRouter as Router, Route } from 'react-router-dom';
+import HelloApp from './hello';
+import LikeApp from './like';
 
 const SPA = () => (
-  <RootProvider debug>
+  <RootProvider>
     <Router history={createHistory()}>
       <div>
-        <AsyncRoute exact path='/' load={() => import('./hello')} />
-        <AsyncRoute path='/like' load={() => import('./like')} />
+        <Route exact path='/' component={HelloApp} />
+        <Route path='/like' component={LikeApp} />
       </div>
     </Router>
   </RootProvider>

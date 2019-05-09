@@ -14,7 +14,7 @@ const store = createRootStore({
 
 function App() {
   return (
-    <RootProvider store={store} debug>
+    <RootProvider store={store}>
       <App1 />
       <App2 />
       <App3 />
@@ -32,13 +32,13 @@ it('test default rootstore', () => {
   );
   const tree = renderer.create(<App />);
   expect(tree).toMatchSnapshot();
-  expect(global['Root']).toMatchSnapshot();
+  expect(global['RootStore']).toMatchSnapshot();
 });
 
 it('test basic root provider', () => {
   const tree = renderer.create(<App />);
   expect(tree).toMatchSnapshot();
-  expect(global['Root']).toMatchSnapshot();
+  expect(global['RootStore']).toMatchSnapshot();
 });
 
 it('test update app', () => {

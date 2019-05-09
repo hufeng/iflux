@@ -6,7 +6,7 @@ import store from './store';
 
 export default function App1() {
   return (
-    <Provider store={store} debug>
+    <Provider store={store}>
       <Text />
     </Provider>
   );

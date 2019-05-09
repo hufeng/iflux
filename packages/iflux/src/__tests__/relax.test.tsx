@@ -66,7 +66,7 @@ class RelaxTest extends React.Component {
 }
 
 const TestApp = () => (
-  <Provider store={store} debug>
+  <Provider store={store} debug id='TestApp'>
     <TestRelax />
     <RelaxTest />
   </Provider>
@@ -77,7 +77,7 @@ it('test init', () => {
   expect(tree).toMatchSnapshot();
 
   act(() => {
-    global['relax-test'].store.setState(state => {
+    global['TestApp'].store.setState(state => {
       state.list[0].id = 2;
     });
   });

@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test didmount 1`] = `
+Array [
+  <div>
+    <div>
+      1
+    </div>
+    <div>
+      hello iflux
+    </div>
+    <div>
+      Ok
+    </div>
+  </div>,
+  <div>
+    <div>
+      1
+    </div>
+    <div>
+      hello iflux
+    </div>
+    <div>
+      Ok
+    </div>
+  </div>,
+]
+`;
