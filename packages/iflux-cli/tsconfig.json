@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "target": "es2017",
+    "rootDir": "src",
+    "outDir": "./lib",
+    "declaration": true,
+    "declarationDir": "./lib/typings"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "iflux-cli",
+  "version": "1.0.0",
+  "description": "a simple iflux scaffold cli",
+  "main": "./lib/index.js",
+  "types": "./lib/typings/inde.d.ts",
+  "bin": {
+    "iflux": "./lib/cli/index.js",
+    "iflux-init": "./lib/cli/init.js",
+    "iflux-new": "./lib/cli/app.js",
+    "iflux-serve": "./lib/server/index.js"
+  },
+  "keywords": [
+    "iflux cli"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hufeng/iflux.git"
+  },
+  "dependencies": {
+    "camelcase": "^5.3.1",
+    "chalk": "^2.4.2",
+    "commander": "^2.20.0",
+    "fs-extra": "^8.0.0",
+    "koa": "^2.7.0",
+    "koa-route": "^3.2.0"
+  },
+  "author": "hufeng",
+  "license": "MIT"
+}
