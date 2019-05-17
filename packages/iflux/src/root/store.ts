@@ -8,7 +8,7 @@ import {
   TPath,
   TRootActionHandler
 } from '../types';
-import { getPathVal, isArray, isStr } from '../util';
+import { getPathVal, isArray, isFn, isStr } from '../util';
 
 /**
  *  Root state container
@@ -122,6 +122,13 @@ export class RootStore<T = any> {
   }): { [name: string]: TRootActionHandler } {
     return Object.keys(actions).reduce((r, key) => {
       const action = actions[key];
+      // 如果当前的值不是函数，提前返回
+      // 主要在用parcel build的时候
+      // import * as action from './action'
+      // action 常常会带一个 _esModule: true
+      if (!isFn(action)) {
+        return r;
+      }
       const { msg, handler } = action();
       r[msg] = handler;
       return r;
