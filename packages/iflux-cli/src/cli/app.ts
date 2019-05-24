@@ -16,6 +16,7 @@ commander.parse(process.argv);
 
 // 获取当前的路径
 const curDir = process.cwd();
+const srcDir = path.join(curDir, 'src');
 // 获取当前的appName
 const appDir = commander.args[0] || '';
 const appName = cameCase(appDir, { pascalCase: true });
@@ -38,7 +39,9 @@ const appName = cameCase(appDir, { pascalCase: true });
     return;
   }
 
-  const appPath = path.join(curDir, appDir);
+  // ensure src
+  await fs.ensureDir(srcDir);
+  const appPath = path.join(srcDir, appDir);
 
   const isExisted = await fs.pathExists(appPath);
   if (isExisted) {
@@ -49,6 +52,7 @@ const appName = cameCase(appDir, { pascalCase: true });
   // 创建目录
   await fs.ensureDir(appPath);
   await fs.ensureDir(path.join(appPath, 'component'));
+
   const format = formatCode({
     tabWidth: 2,
     singleQuote: true,
@@ -93,7 +97,7 @@ const appName = cameCase(appDir, { pascalCase: true });
       format(jsRelax({ relaxName: 'Text', target: config.target }))
     ).catch(err => console.log(err));
 
-    fs.writeFile(path.join(appPath, 'action.js'), format(jsAction({}))).catch(
+    fs.writeFile(path.join(appPath, 'action.js'), format(jsAction())).catch(
       err => console.log(err)
     );
   }

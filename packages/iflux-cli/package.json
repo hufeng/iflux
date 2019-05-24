@@ -8,7 +8,8 @@
     "iflux": "./lib/cli/index.js",
     "iflux-init": "./lib/cli/init.js",
     "iflux-new": "./lib/cli/app.js",
-    "iflux-serve": "./lib/server/index.js"
+    "iflux-serve": "./lib/server/index.js",
+    "iflux-create-web": "./lib/cli/create-web-project.js"
   },
   "keywords": [
     "iflux cli"
