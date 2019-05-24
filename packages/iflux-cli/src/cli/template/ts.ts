@@ -43,8 +43,7 @@ export const tsStore = tpl`
       loading: true,
       text: 'hello ${props => props.appName}'
     }
-    
-  })
+  });
 `;
 
 export const tsRelax = tpl`

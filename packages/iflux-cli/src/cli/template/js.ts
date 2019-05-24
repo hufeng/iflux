@@ -11,7 +11,7 @@ import { tpl } from './index';
 
 export const jsIndex = tpl`
 import React from 'react';
-import {Provider, Store} from 'iflux';
+import {Provider} from 'iflux';
 import store from './store';
 import Text from './component/text';
 
@@ -71,7 +71,7 @@ export const jsRelax = tpl`
           justifyContent: 'center',
           alignItems: 'center'
         }
-      }}`;
+      })`;
     }
     return '';
   }}
@@ -79,7 +79,7 @@ export const jsRelax = tpl`
 `;
 
 export const jsAction = tpl`
-  import {action, Store} from 'iflux';
+  import {action} from 'iflux';
 
   export const onInit = action('onInit', (store) => {
     //send request to server

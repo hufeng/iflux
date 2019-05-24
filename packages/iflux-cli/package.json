@@ -18,6 +18,7 @@
     "url": "https://github.com/hufeng/iflux.git"
   },
   "dependencies": {
+    "prettier": "^1.17.1",
     "camelcase": "^5.3.1",
     "chalk": "^2.4.2",
     "commander": "^2.20.0",
