@@ -4,8 +4,13 @@ import chalk from 'chalk';
 import commander from 'commander';
 import fs from 'fs-extra';
 import path from 'path';
+import prettier from 'prettier';
 import { jsAction, jsIndex, jsRelax, jsStore } from './template/js';
 import { tsAction, tsIndex, tsRelax, tsStore } from './template/ts';
+
+const formatCode = (opts: Object) => (code: string) => {
+  return prettier.format(code, opts);
+};
 
 commander.parse(process.argv);
 
@@ -44,40 +49,52 @@ const appName = cameCase(appDir, { pascalCase: true });
   // 创建目录
   await fs.ensureDir(appPath);
   await fs.ensureDir(path.join(appPath, 'component'));
+  const format = formatCode({
+    tabWidth: 2,
+    singleQuote: true,
+    printWidth: 80,
+    jsxSingleQuote: true,
+    jsxBracketSameLine: false,
+    parser: 'typescript'
+  });
 
   if (config.lang == 'ts') {
-    fs.writeFile(path.join(appPath, 'index.tsx'), tsIndex({ appName })).catch(
-      err => console.log(err)
-    );
+    fs.writeFile(
+      path.join(appPath, 'index.tsx'),
+      format(tsIndex({ appName }))
+    ).catch(err => console.log(err));
 
-    fs.writeFile(path.join(appPath, 'store.ts'), tsStore({ appName })).catch(
-      err => console.log(err)
-    );
+    fs.writeFile(
+      path.join(appPath, 'store.ts'),
+      format(tsStore({ appName }))
+    ).catch(err => console.log(err));
 
     fs.writeFile(
       path.join(appPath, 'component', 'text.tsx'),
-      tsRelax({ relaxName: 'Text', target: config.target })
+      format(tsRelax({ relaxName: 'Text', target: config.target }))
     ).catch(err => console.log(err));
 
-    fs.writeFile(path.join(appPath, 'action.ts'), tsAction({})).catch(err =>
-      console.log(err)
+    fs.writeFile(path.join(appPath, 'action.ts'), format(tsAction({}))).catch(
+      err => console.log(err)
     );
   } else {
-    fs.writeFile(path.join(appPath, 'index.js'), jsIndex({ appName })).catch(
-      err => console.log(err)
-    );
+    fs.writeFile(
+      path.join(appPath, 'index.js'),
+      format(jsIndex({ appName }))
+    ).catch(err => console.log(err));
 
-    fs.writeFile(path.join(appPath, 'store.js'), jsStore({ appName })).catch(
-      err => console.log(err)
-    );
+    fs.writeFile(
+      path.join(appPath, 'store.js'),
+      format(jsStore({ appName }))
+    ).catch(err => console.log(err));
 
     fs.writeFile(
       path.join(appPath, 'component', 'text.js'),
-      jsRelax({ relaxName: 'Text', target: config.target })
+      format(jsRelax({ relaxName: 'Text', target: config.target }))
     ).catch(err => console.log(err));
 
-    fs.writeFile(path.join(appPath, 'action.js'), jsAction({})).catch(err =>
-      console.log(err)
+    fs.writeFile(path.join(appPath, 'action.js'), format(jsAction({}))).catch(
+      err => console.log(err)
     );
   }
 })();
