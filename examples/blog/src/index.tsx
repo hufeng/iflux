@@ -10,7 +10,7 @@ ReactDOM.render(
   <RootProvider debug>
     <Router>
       <Route path='/' component={Blog} />
-      <Route exact path='/blog-new' component={BlogCreate} />
+      <Route exact path='/blog/new' component={BlogCreate} />
       <Route exact path='/blog/:id' component={BlogDetail} />
     </Router>
   </RootProvider>,

@@ -20,7 +20,8 @@ const noop = () => {};
 export default class Provider<T> extends React.Component<IProviderProps<T>> {
   static defaultProps = {
     onMounted: noop,
-    onWillUnmount: noop
+    onWillUnmount: noop,
+    onUpdate: noop
   };
 
   static contextType = RootContext;
@@ -73,6 +74,11 @@ export default class Provider<T> extends React.Component<IProviderProps<T>> {
   componentDidMount() {
     // 回调生命周期方法
     this.props.onMounted && this.props.onMounted(this.store);
+  }
+
+  componentDidUpdate() {
+    // 回调生命周期方法
+    this.props.onUpdate && this.props.onUpdate(this.store);
   }
 
   componentWillUnmount() {

@@ -76,6 +76,7 @@ export interface IProviderProps<T> {
   store?: () => Store<T>;
   onMounted?: (store: Store) => void;
   onWillUnmount?: (store: Store) => void;
+  onUpdate?: (store: Store) => void;
   /**
    * 当前应用标记，主要用于调试
    */

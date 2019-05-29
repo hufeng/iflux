@@ -1,5 +1,5 @@
 export const tpl = (strs: TemplateStringsArray, ...value: Array<Function>) => {
-  return (props: Object) => {
+  return (props: Object = {}) => {
     const merge = [] as Array<any>;
     const params = value.map(v => v(props));
     const pLen = params.length;
