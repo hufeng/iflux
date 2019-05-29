@@ -8,8 +8,7 @@ export default function BlogDetail(props: any) {
   const id = props.match.params.id;
 
   const onInit = (store: Store<IBlog>) => {
-    const blog = store.bigQuery(`@Blog.list.${id}`);
-
+    const blog = store.bigQuery(['@Blog', 'list', id]) || {};
     store.setState(state => {
       state.id = blog.id;
       state.title = blog.title;
@@ -18,9 +17,9 @@ export default function BlogDetail(props: any) {
   };
 
   return (
-    <Provider store={store} onMounted={onInit} debug id='Detail'>
+    <Provider store={store} onMounted={onInit} onUpdate={onInit} id='Detail'>
       <Blog />
-      <a href='javascript:void(0);' onClick={() => props.history.goBack()}>
+      <a href='javascript:void(0);' onClick={props.history.goBack}>
         back
       </a>
     </Provider>

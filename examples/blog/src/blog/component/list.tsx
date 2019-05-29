@@ -8,7 +8,7 @@ export default function List() {
 
   return (
     <div>
-      <Link to='/blog-new'>create new blog</Link>
+      <Link to='/blog/new'>create new blog</Link>
 
       <br />
 
@@ -18,9 +18,11 @@ export default function List() {
         }
 
         return list.map((v, k) => (
-          <Link to={`/blog/${k}`} key={v.id}>
-            {v.id}. {v.title}
-          </Link>
+          <div key={v.id}>
+            <Link to={`/blog/${k}`}>
+              {v.id}. {v.title}
+            </Link>
+          </div>
         ));
       })()}
     </div>
