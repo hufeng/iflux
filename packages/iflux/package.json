@@ -20,7 +20,7 @@
   "license": "MIT",
   "dependencies": {
     "fast-deep-equal": "^2.0.1",
-    "immer": "^2.1.5",
+    "immer": "^9.0.6",
     "mitt": "^1.1.3"
   }
 }
